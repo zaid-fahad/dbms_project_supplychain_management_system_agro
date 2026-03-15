@@ -16,6 +16,47 @@
         <a href="../index.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
     </header>
 
+    <div class="topbar">
+        <div class="topbar-users">
+            <a href="../farmer/dashboard.html" class="topbar-user">
+                <i class="fa fa-leaf"></i>
+                <span>Farmer</span>
+            </a>
+            <a href="../field_supervisor/dashboard.html" class="topbar-user">
+                <i class="fa fa-truck"></i>
+                <span>Field Supervisor</span>
+            </a>
+            <a href="../quality_officer/dashboard.html" class="topbar-user">
+                <i class="fa fa-check-square-o"></i>
+                <span>Quality Officer</span>
+            </a>
+            <a href="../inventory_manager/dashboard.html" class="topbar-user active">
+                <i class="fa fa-cubes"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="../sales_manager/dashboard.html" class="topbar-user">
+                <i class="fa fa-shopping-cart"></i>
+                <span>Sales</span>
+            </a>
+            <a href="../transport_manager/dashboard.html" class="topbar-user">
+                <i class="fa fa-car"></i>
+                <span>Transport</span>
+            </a>
+            <a href="../driver/dashboard.html" class="topbar-user">
+                <i class="fa fa-road"></i>
+                <span>Driver</span>
+            </a>
+            <a href="../super_shop/dashboard.html" class="topbar-user">
+                <i class="fa fa-shopping-bag"></i>
+                <span>Super Shop</span>
+            </a>
+            <a href="../local_market/dashboard.html" class="topbar-user">
+                <i class="fa fa-cart-arrow-down"></i>
+                <span>Local Market</span>
+            </a>
+        </div>
+    </div>
+
     <nav>
         <a href="stock_update.html"><i class="fa fa-plus-square"></i> Update Stock</a>
         <a href="inventory_reports.html"><i class="fa fa-bar-chart"></i> Reports</a>
@@ -61,7 +102,7 @@
                 </a>
                 <a href="low_stock_alerts.html" class="action-btn">
                     <i class="fa fa-exclamation-triangle"></i>
-                    <span>Low Stock Alerts</span>
+                    <span>Low Stock</span>
                 </a>
             </div>
         </div>
@@ -76,27 +117,77 @@
                     <th>Warehouse</th>
                     <th>Stock (kg)</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
                 <tr>
                     <td>Rice</td>
                     <td>Dhaka</td>
                     <td>2,000</td>
                     <td><span class="status completed">In Stock</span></td>
+                    <td><button class="btn btn-info" onclick="viewStock('Rice', 'Dhaka', '2,000', '2,500', 'In Stock')">View</button></td>
                 </tr>
                 <tr>
                     <td>Wheat</td>
                     <td>Barisal</td>
                     <td>1,500</td>
                     <td><span class="status completed">In Stock</span></td>
+                    <td><button class="btn btn-info" onclick="viewStock('Wheat', 'Barisal', '1,500', '2,000', 'In Stock')">View</button></td>
                 </tr>
                 <tr>
                     <td>Potatoes</td>
                     <td>Dhaka</td>
                     <td>200</td>
                     <td><span class="status pending">Low Stock</span></td>
+                    <td><button class="btn btn-info" onclick="viewStock('Potatoes', 'Dhaka', '200', '500', 'Low Stock')">View</button></td>
                 </tr>
             </table>
         </div>
     </main>
+
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Stock Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        function viewStock(product, warehouse, stock, minStock, status) {
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Product:</span>
+                    <span class="detail-value">${product}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Warehouse:</span>
+                    <span class="detail-value">${warehouse}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Current Stock:</span>
+                    <span class="detail-value">${stock} kg</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Min. Required:</span>
+                    <span class="detail-value">${minStock} kg</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value"><span class="status ${status === 'In Stock' ? 'completed' : 'pending'}">${status}</span></span>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary">Update</button>
+                    <button class="btn btn-danger" onclick="closeModal()">Close</button>
+                </div>
+            `;
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+    </script>
 </body>
 </html>

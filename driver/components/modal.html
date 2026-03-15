@@ -1,0 +1,27 @@
+<div class="modal" id="detailsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Driver Delivery Details</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody">{{CONTENT}}</div>
+    </div>
+</div>
+
+<script>
+function viewDetails(id, orderId, customer, pickupAddress, deliveryAddress, items, instructions, status) {
+    document.getElementById('modalBody').innerHTML = `
+        <div class="detail-row"><span class="detail-label">Delivery ID:</span><span class="detail-value">${id}</span></div>
+        <div class="detail-row"><span class="detail-label">Order ID:</span><span class="detail-value">${orderId}</span></div>
+        <div class="detail-row"><span class="detail-label">Customer:</span><span class="detail-value">${customer}</span></div>
+        <div class="detail-row"><span class="detail-label">Pickup Address:</span><span class="detail-value">${pickupAddress}</span></div>
+        <div class="detail-row"><span class="detail-label">Delivery Address:</span><span class="detail-value">${deliveryAddress}</span></div>
+        <div class="detail-row"><span class="detail-label">Items:</span><span class="detail-value">${items}</span></div>
+        <div class="detail-row"><span class="detail-label">Instructions:</span><span class="detail-value">${instructions}</span></div>
+        <div class="detail-row"><span class="detail-label">Status:</span><span class="detail-value"><span class="status ${status === 'Delivered' ? 'completed' : 'pending'}">${status}</span></span></div>
+        <div style="margin-top:20px;display:flex;gap:10px;"><button class="btn btn-primary" onclick="updateStatus()">Update Status</button><button class="btn btn-danger" onclick="closeModal()">Close</button></div>
+    `;
+    document.getElementById('detailsModal').classList.add('active');
+}
+function closeModal() { document.getElementById('detailsModal').classList.remove('active'); }
+</script>

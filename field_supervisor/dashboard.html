@@ -16,6 +16,47 @@
         <a href="../index.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
     </header>
 
+    <div class="topbar">
+        <div class="topbar-users">
+            <a href="../farmer/dashboard.html" class="topbar-user">
+                <i class="fa fa-leaf"></i>
+                <span>Farmer</span>
+            </a>
+            <a href="../field_supervisor/dashboard.html" class="topbar-user active">
+                <i class="fa fa-truck"></i>
+                <span>Field Supervisor</span>
+            </a>
+            <a href="../quality_officer/dashboard.html" class="topbar-user">
+                <i class="fa fa-check-square-o"></i>
+                <span>Quality Officer</span>
+            </a>
+            <a href="../inventory_manager/dashboard.html" class="topbar-user">
+                <i class="fa fa-cubes"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="../sales_manager/dashboard.html" class="topbar-user">
+                <i class="fa fa-shopping-cart"></i>
+                <span>Sales</span>
+            </a>
+            <a href="../transport_manager/dashboard.html" class="topbar-user">
+                <i class="fa fa-car"></i>
+                <span>Transport</span>
+            </a>
+            <a href="../driver/dashboard.html" class="topbar-user">
+                <i class="fa fa-road"></i>
+                <span>Driver</span>
+            </a>
+            <a href="../super_shop/dashboard.html" class="topbar-user">
+                <i class="fa fa-shopping-bag"></i>
+                <span>Super Shop</span>
+            </a>
+            <a href="../local_market/dashboard.html" class="topbar-user">
+                <i class="fa fa-cart-arrow-down"></i>
+                <span>Local Market</span>
+            </a>
+        </div>
+    </div>
+
     <nav>
         <a href="record_purchase.html"><i class="fa fa-cart-plus"></i> Record Purchase</a>
         <a href="batch_management.html"><i class="fa fa-cube"></i> Batch Management</a>
@@ -78,6 +119,7 @@
                     <th>Quantity</th>
                     <th>Date</th>
                     <th>Amount</th>
+                    <th>Action</th>
                 </tr>
                 <tr>
                     <td>FS-001</td>
@@ -86,6 +128,7 @@
                     <td>500 kg</td>
                     <td>2026-03-15</td>
                     <td>25,000 BDT</td>
+                    <td><button class="btn btn-info" onclick="viewPurchase('FS-001', 'Rahim', 'Rice', '500 kg', '2026-03-15', '25,000 BDT', 'Shariatpur')">View</button></td>
                 </tr>
                 <tr>
                     <td>FS-002</td>
@@ -94,9 +137,64 @@
                     <td>300 kg</td>
                     <td>2026-03-14</td>
                     <td>15,000 BDT</td>
+                    <td><button class="btn btn-info" onclick="viewPurchase('FS-002', 'Karim', 'Wheat', '300 kg', '2026-03-14', '15,000 BDT', 'Madaripur')">View</button></td>
                 </tr>
             </table>
         </div>
     </main>
+
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Purchase Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        function viewPurchase(id, farmer, produce, qty, date, amount, location) {
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Batch ID:</span>
+                    <span class="detail-value">${id}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Farmer:</span>
+                    <span class="detail-value">${farmer}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Produce:</span>
+                    <span class="detail-value">${produce}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Quantity:</span>
+                    <span class="detail-value">${qty}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">${date}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value">${amount}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value">${location}</span>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="closeModal()">Close</button>
+                </div>
+            `;
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+    </script>
 </body>
 </html>

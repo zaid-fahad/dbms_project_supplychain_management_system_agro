@@ -1,0 +1,15 @@
+<div class="modal" id="detailsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Details</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+function closeModal() { 
+    document.getElementById('detailsModal').classList.remove('active'); 
+}
+</script>
