@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agricultural Supply Chain System</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
-
-    <!-- Header with Logo and Title -->
     <header>
         <div class="header-left">
             <img src="logo.png" alt="Logo" class="logo">
@@ -18,34 +15,55 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav>
-        <a href="farmer.html" target="frame">Farmer</a>
-        <a href="procurement.html" target="frame">Procurement</a>
-        <a href="quality.html" target="frame">Quality</a>
-        <a href="inventory.html" target="frame">Inventory</a>
-        <a href="sales.html" target="frame">Sales</a>
-        <a href="transport.html" target="frame">Transport</a>
-        <a href="delivery.html" target="frame">Delivery</a>
-    </nav>
-
-    <!-- Main Content -->
-
-    <!-- System Overview
-The diagram illustrates a comprehensive Supply Chain Management System for Agricultural Goods, acting as a centralized hub that connects various stakeholders from the farm level to the end consumer markets. The system facilitates procurement, quality control, inventory management, sales processing, and logistics tracking.
-Process Breakdown by Stakeholders:
-Procurement Phase (Farmer & Field Supervisor):
-The process begins with the Farmer, who supplies the agricultural produce. The Field Supervisor buys the produce directly from the farmer and records this purchase into the central Supply Chain Management System, assigning it a specific batch number.
-Quality Assurance & Inventory Management:
-Once logged, a Quality Officer conducts quality control on the produce batch and updates the central system with a quality tag. Concurrently, the Inventory Manager interacts with the system to update the overall stock levels based on the new, quality-checked batches.
-Sales & Order Processing:
-Demand is driven by two main channels. The Super Shop submits order requests directly to the Sales Manager. The Sales Manager views these requests from the system, verifies them, and processes the sales order. Additionally, the system directly captures orders originating from the Local Market.
-Logistics & Transportation:
-To fulfill these orders, the Transport Manager pulls pickup requests and delivery orders from the central database. They then assign a Driver for the delivery via the system.
-Fulfillment & Tracking:
-The Driver receives delivery instructions from the system, proceeds to pick up the produce from the Farmer, and continuously updates the delivery status back into the system. To ensure safety and real-time monitoring, a Vehicle IoT Device automatically uploads live sensor data (including location, speed, and gyroscope metrics) directly to the system.
- -->
-    <iframe class="content" name="frame"></iframe>
-
+    <main>
+        <h2 class="page-title" style="text-align:center;">Select Your Role</h2>
+        <div class="user-grid">
+            <a href="farmer/dashboard.html" class="user-card">
+                <i class="fa fa-leaf"></i>
+                <h3>Farmer</h3>
+                <p>Submit agricultural produce</p>
+            </a>
+            <a href="field_supervisor/dashboard.html" class="user-card">
+                <i class="fa fa-truck"></i>
+                <h3>Field Supervisor</h3>
+                <p>Record purchases from farmers</p>
+            </a>
+            <a href="quality_officer/dashboard.html" class="user-card">
+                <i class="fa fa-check-square-o"></i>
+                <h3>Quality Officer</h3>
+                <p>Conduct quality control checks</p>
+            </a>
+            <a href="inventory_manager/dashboard.html" class="user-card">
+                <i class="fa fa-cubes"></i>
+                <h3>Inventory Manager</h3>
+                <p>Manage stock levels</p>
+            </a>
+            <a href="sales_manager/dashboard.html" class="user-card">
+                <i class="fa fa-shopping-cart"></i>
+                <h3>Sales Manager</h3>
+                <p>Process sales orders</p>
+            </a>
+            <a href="transport_manager/dashboard.html" class="user-card">
+                <i class="fa fa-car"></i>
+                <h3>Transport Manager</h3>
+                <p>Assign deliveries</p>
+            </a>
+            <a href="driver/dashboard.html" class="user-card">
+                <i class="fa fa-road"></i>
+                <h3>Driver</h3>
+                <p>Execute deliveries</p>
+            </a>
+            <a href="super_shop/dashboard.html" class="user-card">
+                <i class="fa fa-shopping-bag"></i>
+                <h3>Super Shop</h3>
+                <p>Place orders</p>
+            </a>
+            <a href="local_market/dashboard.html" class="user-card">
+                <i class="fa fa-cart-arrow-down"></i>
+                <h3>Local Market</h3>
+                <p>View market orders</p>
+            </a>
+        </div>
+    </main>
 </body>
 </html>

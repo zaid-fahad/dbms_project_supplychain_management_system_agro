@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Management - Transport Manager</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Fleet Management</span>
+        </div>
+        <a href="dashboard.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="pickup_requests.html"><i class="fa fa-truck"></i> Pickup Requests</a>
+        <a href="delivery_orders.html"><i class="fa fa-send"></i> Delivery Orders</a>
+        <a href="fleet_management.html" class="active"><i class="fa fa-car"></i> Fleet Management</a>
+    </nav>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Vehicle Fleet</span>
+                <button class="btn btn-primary"><i class="fa fa-plus"></i> Add Vehicle</button>
+            </div>
+            <table>
+                <tr>
+                    <th>Vehicle ID</th>
+                    <th>Type</th>
+                    <th>Driver</th>
+                    <th>Status</th>
+                    <th>Last Maintenance</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Truck-001</td>
+                    <td>Truck</td>
+                    <td>Rafiq</td>
+                    <td><span class="status in-transit">On Road</span></td>
+                    <td>2026-02-15</td>
+                    <td><button class="btn btn-info">Details</button></td>
+                </tr>
+                <tr>
+                    <td>Van-002</td>
+                    <td>Van</td>
+                    <td>Hasan</td>
+                    <td><span class="status pending">Available</span></td>
+                    <td>2026-03-01</td>
+                    <td><button class="btn btn-info">Details</button></td>
+                </tr>
+                <tr>
+                    <td>Truck-003</td>
+                    <td>Truck</td>
+                    <td>Rashid</td>
+                    <td><span class="status pending">Available</span></td>
+                    <td>2026-02-28</td>
+                    <td><button class="btn btn-info">Details</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Drivers</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Driver ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>License</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>D-001</td>
+                    <td>Rafiq</td>
+                    <td>0171xxxxxxx</td>
+                    <td>Valid</td>
+                    <td><span class="status in-transit">On Duty</span></td>
+                </tr>
+                <tr>
+                    <td>D-002</td>
+                    <td>Hasan</td>
+                    <td>0172xxxxxxx</td>
+                    <td>Valid</td>
+                    <td><span class="status pending">Available</span></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

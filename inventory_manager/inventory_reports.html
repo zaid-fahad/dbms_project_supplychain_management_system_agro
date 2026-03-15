@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Reports - Inventory Manager</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Inventory Reports</span>
+        </div>
+        <a href="dashboard.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="stock_update.html"><i class="fa fa-plus-square"></i> Update Stock</a>
+        <a href="inventory_reports.html" class="active"><i class="fa fa-bar-chart"></i> Reports</a>
+        <a href="low_stock_alerts.html"><i class="fa fa-exclamation-triangle"></i> Low Stock</a>
+    </nav>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Stock Summary by Product</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Warehouse</th>
+                    <th>Current Stock</th>
+                    <th>In Transit</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>Rice</td>
+                    <td>Dhaka</td>
+                    <td>2,000 kg</td>
+                    <td>500 kg</td>
+                    <td>2,500 kg</td>
+                </tr>
+                <tr>
+                    <td>Wheat</td>
+                    <td>Barisal</td>
+                    <td>1,500 kg</td>
+                    <td>300 kg</td>
+                    <td>1,800 kg</td>
+                </tr>
+                <tr>
+                    <td>Potatoes</td>
+                    <td>Dhaka</td>
+                    <td>200 kg</td>
+                    <td>0 kg</td>
+                    <td>200 kg</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Orders - Transport Manager</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Delivery Orders</span>
+        </div>
+        <a href="dashboard.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="pickup_requests.html"><i class="fa fa-truck"></i> Pickup Requests</a>
+        <a href="delivery_orders.html" class="active"><i class="fa fa-send"></i> Delivery Orders</a>
+        <a href="fleet_management.html"><i class="fa fa-car"></i> Fleet Management</a>
+    </nav>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Active Delivery Orders</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Driver</th>
+                    <th>Vehicle</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>DEL-001</td>
+                    <td>Super Shop A</td>
+                    <td>Rice (200kg)</td>
+                    <td>Rafiq</td>
+                    <td>Truck-001</td>
+                    <td><span class="status in-transit">In Transit</span></td>
+                </tr>
+                <tr>
+                    <td>DEL-002</td>
+                    <td>Local Market</td>
+                    <td>Wheat (150kg)</td>
+                    <td>Hasan</td>
+                    <td>Van-002</td>
+                    <td><span class="status pending">Assigned</span></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

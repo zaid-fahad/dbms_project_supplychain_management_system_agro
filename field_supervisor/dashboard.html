@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Supervisor Dashboard</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Field Supervisor Dashboard</span>
+        </div>
+        <a href="../index.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="record_purchase.html"><i class="fa fa-cart-plus"></i> Record Purchase</a>
+        <a href="batch_management.html"><i class="fa fa-cube"></i> Batch Management</a>
+        <a href="farmer_list.html"><i class="fa fa-users"></i> Farmer List</a>
+    </nav>
+
+    <main>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fa fa-cart-plus"></i>
+                <div class="value">45</div>
+                <div class="label">Total Purchases</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-users"></i>
+                <div class="value">28</div>
+                <div class="label">Farmers</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-cube"></i>
+                <div class="value">45</div>
+                <div class="label">Batches Created</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-money"></i>
+                <div class="value">850,000</div>
+                <div class="label">Total Spent (BDT)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Quick Actions</span>
+            </div>
+            <div class="quick-actions">
+                <a href="record_purchase.html" class="action-btn">
+                    <i class="fa fa-cart-plus"></i>
+                    <span>Record Purchase</span>
+                </a>
+                <a href="batch_management.html" class="action-btn">
+                    <i class="fa fa-cube"></i>
+                    <span>Manage Batches</span>
+                </a>
+                <a href="farmer_list.html" class="action-btn">
+                    <i class="fa fa-users"></i>
+                    <span>Farmer List</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Recent Purchases</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Batch ID</th>
+                    <th>Farmer</th>
+                    <th>Produce</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>FS-001</td>
+                    <td>Rahim</td>
+                    <td>Rice</td>
+                    <td>500 kg</td>
+                    <td>2026-03-15</td>
+                    <td>25,000 BDT</td>
+                </tr>
+                <tr>
+                    <td>FS-002</td>
+                    <td>Karim</td>
+                    <td>Wheat</td>
+                    <td>300 kg</td>
+                    <td>2026-03-14</td>
+                    <td>15,000 BDT</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

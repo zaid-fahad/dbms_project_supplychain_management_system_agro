@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Market Dashboard</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Local Market Dashboard</span>
+        </div>
+        <a href="../index.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="market_orders.html"><i class="fa fa-cart-arrow-down"></i> Market Orders</a>
+        <a href="demand_forecast.html"><i class="fa fa-line-chart"></i> Demand Forecast</a>
+        <a href="price_trends.html"><i class="fa fa-bar-chart"></i> Price Trends</a>
+    </nav>
+
+    <main>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fa fa-cart-arrow-down"></i>
+                <div class="value">60</div>
+                <div class="label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-check-circle"></i>
+                <div class="value">55</div>
+                <div class="label">Fulfilled</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-clock-o"></i>
+                <div class="value">5</div>
+                <div class="label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-money"></i>
+                <div class="value">750,000</div>
+                <div class="label">Total Value</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Quick Actions</span>
+            </div>
+            <div class="quick-actions">
+                <a href="market_orders.html" class="action-btn">
+                    <i class="fa fa-cart-arrow-down"></i>
+                    <span>Market Orders</span>
+                </a>
+                <a href="demand_forecast.html" class="action-btn">
+                    <i class="fa fa-line-chart"></i>
+                    <span>Demand Forecast</span>
+                </a>
+                <a href="price_trends.html" class="action-btn">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>Price Trends</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Market Orders</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price/kg</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>LM-001</td>
+                    <td>Rice</td>
+                    <td>500 kg</td>
+                    <td>50 BDT</td>
+                    <td><span class="status completed">Fulfilled</span></td>
+                </tr>
+                <tr>
+                    <td>LM-002</td>
+                    <td>Potatoes</td>
+                    <td>300 kg</td>
+                    <td>25 BDT</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport Manager Dashboard</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../logo.png" alt="Logo" class="logo">
+            <span class="title">Transport Manager Dashboard</span>
+        </div>
+        <a href="../index.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
+    </header>
+
+    <nav>
+        <a href="pickup_requests.html"><i class="fa fa-truck"></i> Pickup Requests</a>
+        <a href="delivery_orders.html"><i class="fa fa-send"></i> Delivery Orders</a>
+        <a href="fleet_management.html"><i class="fa fa-car"></i> Fleet Management</a>
+    </nav>
+
+    <main>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fa fa-truck"></i>
+                <div class="value">45</div>
+                <div class="label">Pickups</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-send"></i>
+                <div class="value">40</div>
+                <div class="label">Deliveries</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-car"></i>
+                <div class="value">8</div>
+                <div class="label">Vehicles</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa fa-user"></i>
+                <div class="value">10</div>
+                <div class="label">Drivers</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Quick Actions</span>
+            </div>
+            <div class="quick-actions">
+                <a href="pickup_requests.html" class="action-btn">
+                    <i class="fa fa-truck"></i>
+                    <span>Pickup Requests</span>
+                </a>
+                <a href="delivery_orders.html" class="action-btn">
+                    <i class="fa fa-send"></i>
+                    <span>Delivery Orders</span>
+                </a>
+                <a href="fleet_management.html" class="action-btn">
+                    <i class="fa fa-car"></i>
+                    <span>Fleet Management</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Active Deliveries</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Driver</th>
+                    <th>Vehicle</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>DEL-001</td>
+                    <td>Rafiq</td>
+                    <td>Truck-001</td>
+                    <td>Dhaka</td>
+                    <td><span class="status in-transit">In Transit</span></td>
+                </tr>
+                <tr>
+                    <td>DEL-002</td>
+                    <td>Hasan</td>
+                    <td>Van-002</td>
+                    <td>Barisal</td>
+                    <td><span class="status pending">Assigned</span></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
