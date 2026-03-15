@@ -1,113 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Batch Management - Field Supervisor</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-    <header>
-        <div class="header-left">
-            <img src="../logo.png" alt="Logo" class="logo">
-            <span class="title">Batch Management</span>
-        </div>
-        <a href="dashboard.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
-    </header>
-
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
     <div class="topbar">
-        <div class="topbar-users">
-            <a href="../farmer/dashboard.html" class="topbar-user">
-                <i class="fa fa-leaf"></i>
-                <span>Farmer</span>
-            </a>
-            <a href="../field_supervisor/dashboard.html" class="topbar-user active">
-                <i class="fa fa-truck"></i>
-                <span>Field Supervisor</span>
-            </a>
-            <a href="../quality_officer/dashboard.html" class="topbar-user">
-                <i class="fa fa-check-square-o"></i>
-                <span>Quality Officer</span>
-            </a>
-            <a href="../inventory_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-cubes"></i>
-                <span>Inventory</span>
-            </a>
-            <a href="../sales_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-shopping-cart"></i>
-                <span>Sales</span>
-            </a>
-            <a href="../transport_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-car"></i>
-                <span>Transport</span>
-            </a>
-            <a href="../driver/dashboard.html" class="topbar-user">
-                <i class="fa fa-road"></i>
-                <span>Driver</span>
-            </a>
-            <a href="../super_shop/dashboard.html" class="topbar-user">
-                <i class="fa fa-shopping-bag"></i>
-                <span>Super Shop</span>
-            </a>
-            <a href="../local_market/dashboard.html" class="topbar-user">
-                <i class="fa fa-cart-arrow-down"></i>
-                <span>Local Market</span>
-            </a>
-        </div>
+      <div class="topbar-users">
+        <a href="../farmer/dashboard.html" class="topbar-user">
+          <i class="fa fa-leaf"></i>
+          <span>Farmer</span>
+        </a>
+        <a href="../field_supervisor/dashboard.html" class="topbar-user active">
+          <i class="fa fa-truck"></i>
+          <span>Field Supervisor</span>
+        </a>
+        <a href="../quality_officer/dashboard.html" class="topbar-user">
+          <i class="fa fa-check-square-o"></i>
+          <span>Quality Officer</span>
+        </a>
+        <a href="../inventory_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-cubes"></i>
+          <span>Inventory</span>
+        </a>
+        <a href="../sales_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-shopping-cart"></i>
+          <span>Sales</span>
+        </a>
+        <a href="../transport_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-car"></i>
+          <span>Transport</span>
+        </a>
+        <a href="../driver/dashboard.html" class="topbar-user">
+          <i class="fa fa-road"></i>
+          <span>Driver</span>
+        </a>
+        <a href="../super_shop/dashboard.html" class="topbar-user">
+          <i class="fa fa-shopping-bag"></i>
+          <span>Super Shop</span>
+        </a>
+        <a href="../local_market/dashboard.html" class="topbar-user">
+          <i class="fa fa-cart-arrow-down"></i>
+          <span>Local Market</span>
+        </a>
+      </div>
     </div>
 
-    <nav>
+    <header>
+      <div class="header-left">
+        <img src="../logo.png" alt="Logo" class="logo" />
+        <span class="title">Batch Management</span>
+      </div>
+      <a href="dashboard.html" class="back-btn"
+        ><i class="fa fa-arrow-left"></i> Back</a
+      >
+    </header>
+
+    <!-- <nav>
         <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
         <a href="record_purchase.html"><i class="fa fa-cart-plus"></i> Record Purchase</a>
         <a href="batch_management.html" class="active"><i class="fa fa-cube"></i> Batch Management</a>
         <a href="farmer_list.html"><i class="fa fa-users"></i> Farmer List</a>
-    </nav>
+    </nav> -->
 
     <main>
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">All Batches</span>
-            </div>
-            <table>
-                <tr>
-                    <th>Batch ID</th>
-                    <th>Farmer</th>
-                    <th>Produce</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>FS-001</td>
-                    <td>Rahim</td>
-                    <td>Rice</td>
-                    <td>500 kg</td>
-                    <td>2026-03-15</td>
-                    <td><span class="status pending">Sent to Quality</span></td>
-                    <td><button class="btn btn-info">View</button></td>
-                </tr>
-                <tr>
-                    <td>FS-002</td>
-                    <td>Karim</td>
-                    <td>Wheat</td>
-                    <td>300 kg</td>
-                    <td>2026-03-14</td>
-                    <td><span class="status completed">Approved</span></td>
-                    <td><button class="btn btn-info">View</button></td>
-                </tr>
-                <tr>
-                    <td>FS-003</td>
-                    <td>Salam</td>
-                    <td>Potatoes</td>
-                    <td>200 kg</td>
-                    <td>2026-03-13</td>
-                    <td><span class="status completed">Approved</span></td>
-                    <td><button class="btn btn-info">View</button></td>
-                </tr>
-            </table>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">All Batches</span>
         </div>
+        <table>
+          <tr>
+            <th>Batch ID</th>
+            <th>Farmer</th>
+            <th>Produce</th>
+            <th>Quantity</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <td>FS-001</td>
+            <td>Rahim</td>
+            <td>Rice</td>
+            <td>500 kg</td>
+            <td>2026-03-15</td>
+            <td><span class="status pending">Sent to Quality</span></td>
+            <td><button class="btn btn-info">View</button></td>
+          </tr>
+          <tr>
+            <td>FS-002</td>
+            <td>Karim</td>
+            <td>Wheat</td>
+            <td>300 kg</td>
+            <td>2026-03-14</td>
+            <td><span class="status completed">Approved</span></td>
+            <td><button class="btn btn-info">View</button></td>
+          </tr>
+          <tr>
+            <td>FS-003</td>
+            <td>Salam</td>
+            <td>Potatoes</td>
+            <td>200 kg</td>
+            <td>2026-03-13</td>
+            <td><span class="status completed">Approved</span></td>
+            <td><button class="btn btn-info">View</button></td>
+          </tr>
+        </table>
+      </div>
     </main>
-</body>
+  </body>
 </html>

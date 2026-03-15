@@ -1,116 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quality Check - Quality Officer</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-    <header>
-        <div class="header-left">
-            <img src="../logo.png" alt="Logo" class="logo">
-            <span class="title">Conduct Quality Check</span>
-        </div>
-        <a href="dashboard.html" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
-    </header>
-
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
     <div class="topbar">
-        <div class="topbar-users">
-            <a href="../farmer/dashboard.html" class="topbar-user">
-                <i class="fa fa-leaf"></i>
-                <span>Farmer</span>
-            </a>
-            <a href="../field_supervisor/dashboard.html" class="topbar-user">
-                <i class="fa fa-truck"></i>
-                <span>Field Supervisor</span>
-            </a>
-            <a href="../quality_officer/dashboard.html" class="topbar-user active">
-                <i class="fa fa-check-square-o"></i>
-                <span>Quality Officer</span>
-            </a>
-            <a href="../inventory_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-cubes"></i>
-                <span>Inventory</span>
-            </a>
-            <a href="../sales_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-shopping-cart"></i>
-                <span>Sales</span>
-            </a>
-            <a href="../transport_manager/dashboard.html" class="topbar-user">
-                <i class="fa fa-car"></i>
-                <span>Transport</span>
-            </a>
-            <a href="../driver/dashboard.html" class="topbar-user">
-                <i class="fa fa-road"></i>
-                <span>Driver</span>
-            </a>
-            <a href="../super_shop/dashboard.html" class="topbar-user">
-                <i class="fa fa-shopping-bag"></i>
-                <span>Super Shop</span>
-            </a>
-            <a href="../local_market/dashboard.html" class="topbar-user">
-                <i class="fa fa-cart-arrow-down"></i>
-                <span>Local Market</span>
-            </a>
-        </div>
+      <div class="topbar-users">
+        <a href="../farmer/dashboard.html" class="topbar-user">
+          <i class="fa fa-leaf"></i>
+          <span>Farmer</span>
+        </a>
+        <a href="../field_supervisor/dashboard.html" class="topbar-user">
+          <i class="fa fa-truck"></i>
+          <span>Field Supervisor</span>
+        </a>
+        <a href="../quality_officer/dashboard.html" class="topbar-user active">
+          <i class="fa fa-check-square-o"></i>
+          <span>Quality Officer</span>
+        </a>
+        <a href="../inventory_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-cubes"></i>
+          <span>Inventory</span>
+        </a>
+        <a href="../sales_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-shopping-cart"></i>
+          <span>Sales</span>
+        </a>
+        <a href="../transport_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-car"></i>
+          <span>Transport</span>
+        </a>
+        <a href="../driver/dashboard.html" class="topbar-user">
+          <i class="fa fa-road"></i>
+          <span>Driver</span>
+        </a>
+        <a href="../super_shop/dashboard.html" class="topbar-user">
+          <i class="fa fa-shopping-bag"></i>
+          <span>Super Shop</span>
+        </a>
+        <a href="../local_market/dashboard.html" class="topbar-user">
+          <i class="fa fa-cart-arrow-down"></i>
+          <span>Local Market</span>
+        </a>
+      </div>
     </div>
 
-    <nav>
+    <header>
+      <div class="header-left">
+        <img src="../logo.png" alt="Logo" class="logo" />
+        <span class="title">Conduct Quality Check</span>
+      </div>
+      <a href="dashboard.html" class="back-btn"
+        ><i class="fa fa-arrow-left"></i> Back</a
+      >
+    </header>
+
+    <!-- <nav>
         <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
         <a href="quality_check.html" class="active"><i class="fa fa-check-square-o"></i> Quality Check</a>
         <a href="batch_approval.html"><i class="fa fa-check-circle"></i> Batch Approval</a>
         <a href="quality_reports.html"><i class="fa fa-bar-chart"></i> Reports</a>
-    </nav>
+    </nav> -->
 
     <main>
-        <div class="card" style="max-width: 600px; margin: 0 auto;">
-            <div class="card-header">
-                <span class="card-title">Quality Check Form</span>
-            </div>
-            <form onsubmit="event.preventDefault(); alert('Quality check submitted successfully!');">
-                <div class="form-group">
-                    <label for="batch-number">Batch Number</label>
-                    <select id="batch-number" name="batch-number" required>
-                        <option value="">Select Batch</option>
-                        <option value="FS-001">FS-001 (Rice - Rahim)</option>
-                        <option value="FS-002">FS-002 (Wheat - Karim)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="moisture">Moisture Content (%)</label>
-                    <input type="number" id="moisture" name="moisture" placeholder="Enter moisture %" required>
-                </div>
-                <div class="form-group">
-                    <label for="purity">Purity (%)</label>
-                    <input type="number" id="purity" name="purity" placeholder="Enter purity %" required>
-                </div>
-                <div class="form-group">
-                    <label for="grade">Grade</label>
-                    <select id="grade" name="grade" required>
-                        <option value="">Select Grade</option>
-                        <option value="A">Grade A (Premium)</option>
-                        <option value="B">Grade B (Standard)</option>
-                        <option value="C">Grade C (Low)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="result">Result</label>
-                    <select id="result" name="result" required>
-                        <option value="">Select Result</option>
-                        <option value="pass">Pass</option>
-                        <option value="fail">Fail</option>
-                        <option value="conditional">Conditional Pass</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="comments">Comments</label>
-                    <textarea id="comments" name="comments" rows="3" placeholder="Additional notes"></textarea>
-                </div>
-                <button type="submit" class="btn-submit"><i class="fa fa-check"></i> Submit Quality Check</button>
-            </form>
+      <div class="card" style="max-width: 600px; margin: 0 auto">
+        <div class="card-header">
+          <span class="card-title">Quality Check Form</span>
         </div>
+        <form
+          onsubmit="event.preventDefault(); alert('Quality check submitted successfully!');"
+        >
+          <div class="form-group">
+            <label for="batch-number">Batch Number</label>
+            <select id="batch-number" name="batch-number" required>
+              <option value="">Select Batch</option>
+              <option value="FS-001">FS-001 (Rice - Rahim)</option>
+              <option value="FS-002">FS-002 (Wheat - Karim)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="moisture">Moisture Content (%)</label>
+            <input
+              type="number"
+              id="moisture"
+              name="moisture"
+              placeholder="Enter moisture %"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="purity">Purity (%)</label>
+            <input
+              type="number"
+              id="purity"
+              name="purity"
+              placeholder="Enter purity %"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="grade">Grade</label>
+            <select id="grade" name="grade" required>
+              <option value="">Select Grade</option>
+              <option value="A">Grade A (Premium)</option>
+              <option value="B">Grade B (Standard)</option>
+              <option value="C">Grade C (Low)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="result">Result</label>
+            <select id="result" name="result" required>
+              <option value="">Select Result</option>
+              <option value="pass">Pass</option>
+              <option value="fail">Fail</option>
+              <option value="conditional">Conditional Pass</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="comments">Comments</label>
+            <textarea
+              id="comments"
+              name="comments"
+              rows="3"
+              placeholder="Additional notes"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn-submit">
+            <i class="fa fa-check"></i> Submit Quality Check
+          </button>
+        </form>
+      </div>
     </main>
-</body>
+  </body>
 </html>
