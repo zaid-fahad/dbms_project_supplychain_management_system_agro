@@ -16,18 +16,28 @@ The diagram illustrates a comprehensive **Supply Chain Management System for Agr
 ## Process Breakdown by Stakeholders
 
 ###  Procurement Phase (Farmer & Field Supervisor)
+![Farmer](screenshots/farmer_dashboard.html.png)
+![FieldSupervisor](screenshots/field_supervisor_dashboard.html.png)
+
 The process begins with the **Farmer**, who supplies the agricultural produce. The **Field Supervisor** buys the produce directly from the farmer and records this purchase into the central Supply Chain Management System, assigning it a specific batch number.
 
 ###  Quality Assurance & Inventory Management
+![alt text](screenshots/quality_officer_dashboard.html.png)
+![alt text](screenshots/inventory_manager_dashboard.html.png)
 Once logged, a **Quality Officer** conducts quality control on the produce batch and updates the central system with a quality tag. Concurrently, the **Inventory Manager** interacts with the system to update the overall stock levels based on the new, quality-checked batches.
 
 ###  Sales & Order Processing
+![alt text](screenshots/sales_manager_dashboard.html.png)
 Demand is driven by two main channels:
 * **Super Shops:** Submit order requests directly to the **Sales Manager**. The Sales Manager views these requests from the system, verifies them, and processes the sales order. 
+![alt text](screenshots/super_shop_dashboard.html.png)
 * **Local Markets:** The system directly captures orders originating from the local market.
+![alt text](screenshots/local_market_dashboard.html.png)
 
 ###  Logistics & Transportation
+![alt text](screenshots/transport_manager_dashboard.html.png)
 To fulfill these orders, the **Transport Manager** pulls pickup requests and delivery orders from the central database. They then assign a **Driver** for the delivery via the system.
 
 ###  Fulfillment & Tracking
+![alt text](screenshots/driver_dashboard.html.png)
 The **Driver** receives delivery instructions from the system, proceeds to pick up the produce from the Farmer, and continuously updates the delivery status back into the system. To ensure safety and real-time monitoring, a **Vehicle IoT Device** automatically uploads live sensor data (including location, speed, and gyroscope metrics) directly to the system.
