@@ -1,3 +1,27 @@
+<?php
+include "../db.php";
+
+$total_batches = 0;
+$total_farmers = 0;
+$total_purchases = 0;
+$total_earnings = 0;
+
+$result = $conn->query("SELECT COUNT(*) AS total FROM Batches");
+if ($result) {
+    $total_batches = $result->fetch_assoc()['total'];
+}
+
+$result = $conn->query("SELECT COUNT(*) AS total FROM Farmers");
+if ($result) {
+    $total_farmers = $result->fetch_assoc()['total'];
+}
+
+$total_purchases = $total_batches;
+
+$recent_sql = "SELECT b.batch_number, f.name AS farmer_name, p.product_name, b.quantity, b.unit, DATE_FORMAT(b.purchase_date, '%Y-%m-%d') AS purchase_date, q.quality_tag FROM Batches b JOIN Farmers f ON b.farmer_id=f.farmer_id JOIN Products p ON b.product_id=p.product_id LEFT JOIN Quality_Checks q ON b.batch_id=q.batch_id ORDER BY b.purchase_date DESC LIMIT 5";
+$recent_result = $conn->query($recent_sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,19 +29,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Field Supervisor Dashboard</title>
     <link rel="stylesheet" href="../style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
   <body>
     <div class="topbar">
       <div class="topbar-users">
-        <a href="../farmer/dashboard.html" class="topbar-user">
+        <a href="../farmer/dashboard.php" class="topbar-user">
           <i class="fa fa-leaf"></i>
           <span>Farmer</span>
         </a>
-        <a href="../field_supervisor/dashboard.html" class="topbar-user active">
+        <a href="../field_supervisor/dashboard.php" class="topbar-user active">
           <i class="fa fa-truck"></i>
           <span>Field Supervisor</span>
         </a>
@@ -56,37 +77,29 @@
         <img src="../logo.png" alt="Logo" class="logo" />
         <span class="title">Field Supervisor Dashboard</span>
       </div>
-      <a href="../index.html" class="back-btn"
-        ><i class="fa fa-arrow-left"></i> Back</a
-      >
+      <a href="../index.php" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
     </header>
-
-    <!-- <nav>
-        <a href="record_purchase.html"><i class="fa fa-cart-plus"></i> Record Purchase</a>
-        <a href="batch_management.html"><i class="fa fa-cube"></i> Batch Management</a>
-        <a href="farmer_list.html"><i class="fa fa-users"></i> Farmer List</a>
-    </nav> -->
 
     <main>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-cart-plus"></i>
-          <div class="value">45</div>
+          <div class="value"><?php echo $total_purchases; ?></div>
           <div class="label">Total Purchases</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-users"></i>
-          <div class="value">28</div>
+          <div class="value"><?php echo $total_farmers; ?></div>
           <div class="label">Farmers</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-cube"></i>
-          <div class="value">45</div>
+          <div class="value"><?php echo $total_batches; ?></div>
           <div class="label">Batches Created</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-money"></i>
-          <div class="value">850,000</div>
+          <div class="value"><?php echo $total_earnings; ?></div>
           <div class="label">Total Spent (BDT)</div>
         </div>
       </div>
@@ -96,17 +109,30 @@
           <span class="card-title">Quick Actions</span>
         </div>
         <div class="quick-actions">
-          <a href="record_purchase.html" class="action-btn">
-            <i class="fa fa-cart-plus"></i>
+          <a href="record_purchase.php" class="action-btn">
+            <i class="fa fa-shopping-cart"></i>
             <span>Record Purchase</span>
           </a>
-          <a href="batch_management.html" class="action-btn">
+          <a href="batch_management.php" class="action-btn">
             <i class="fa fa-cube"></i>
             <span>Manage Batches</span>
           </a>
-          <a href="farmer_list.html" class="action-btn">
+          <a href="farmer_list.php" class="action-btn">
             <i class="fa fa-users"></i>
             <span>Farmer List</span>
+          </a>
+          <a href="farmer_status.php" class="action-btn">
+            <i class="fa fa-list-alt"></i>
+            <span>Farmer Status</span>
+          </a>
+          <a href="farmer_history.php" class="action-btn">
+            <i class="fa fa-history"></i>
+            <span>Sales History</span>
+          </a>
+
+          <a href="add_farmer.php" class="action-btn">
+            <i class="fa fa-user-plus"></i>
+            <span>Add Farmer</span>
           </a>
         </div>
       </div>
@@ -122,97 +148,28 @@
             <th>Produce</th>
             <th>Quantity</th>
             <th>Date</th>
-            <th>Amount</th>
-            <th>Action</th>
+            <th>Status</th>
           </tr>
+          <?php if ($recent_result && $recent_result->num_rows > 0) {
+            while ($row = $recent_result->fetch_assoc()) {
+              $status = $row['quality_tag'] ? 'Approved' : 'Pending';
+              $status_class = $status === 'Approved' ? 'completed' : 'pending';
+          ?>
           <tr>
-            <td>FS-001</td>
-            <td>Rahim</td>
-            <td>Rice</td>
-            <td>500 kg</td>
-            <td>2026-03-15</td>
-            <td>25,000 BDT</td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewPurchase('FS-001', 'Rahim', 'Rice', '500 kg', '2026-03-15', '25,000 BDT', 'Shariatpur')"
-              >
-                View
-              </button>
-            </td>
+            <td><?php echo htmlspecialchars($row['batch_number']); ?></td>
+            <td><?php echo htmlspecialchars($row['farmer_name']); ?></td>
+            <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+            <td><?php echo htmlspecialchars($row['quantity'] . ' ' . $row['unit']); ?></td>
+            <td><?php echo htmlspecialchars($row['purchase_date']); ?></td>
+            <td><span class="status <?php echo $status_class; ?>"><?php echo $status; ?></span></td>
           </tr>
-          <tr>
-            <td>FS-002</td>
-            <td>Karim</td>
-            <td>Wheat</td>
-            <td>300 kg</td>
-            <td>2026-03-14</td>
-            <td>15,000 BDT</td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewPurchase('FS-002', 'Karim', 'Wheat', '300 kg', '2026-03-14', '15,000 BDT', 'Madaripur')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
+          <?php }
+          } else {
+            echo '<tr><td colspan="6">No recent purchases available.</td></tr>';
+          }
+          $conn->close(); ?>
         </table>
       </div>
     </main>
-
-    <div class="modal" id="detailsModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Purchase Details</h3>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
-        </div>
-        <div id="modalBody"></div>
-      </div>
-    </div>
-
-    <script>
-      function viewPurchase(id, farmer, produce, qty, date, amount, location) {
-        document.getElementById("modalBody").innerHTML = `
-                <div class="detail-row">
-                    <span class="detail-label">Batch ID:</span>
-                    <span class="detail-value">${id}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Farmer:</span>
-                    <span class="detail-value">${farmer}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Produce:</span>
-                    <span class="detail-value">${produce}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Quantity:</span>
-                    <span class="detail-value">${qty}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Date:</span>
-                    <span class="detail-value">${date}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Amount:</span>
-                    <span class="detail-value">${amount}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Location:</span>
-                    <span class="detail-value">${location}</span>
-                </div>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-danger" onclick="closeModal()">Close</button>
-                </div>
-            `;
-        document.getElementById("detailsModal").classList.add("active");
-      }
-
-      function closeModal() {
-        document.getElementById("detailsModal").classList.remove("active");
-      }
-    </script>
   </body>
 </html>
