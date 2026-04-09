@@ -54,17 +54,8 @@ if (isset($_GET['batch_id'])) {
     />
   </head>
   <body>
-    <?php include 'components/topbar.html'; ?>
-
-    <header>
-      <div class="header-left">
-        <img src="../logo.png" alt="Logo" class="logo" />
-        <span class="title">Update Batch</span>
-      </div>
-      <a href="status.php" class="back-btn"
-        ><i class="fa fa-arrow-left"></i> Back</a
-      >
-    </header>
+    <?php include '../components/topbar.html'; ?>
+    <?php $page_title = 'Update Batch'; include '../components/header.html'; ?>
 
     <?php include 'components/nav.html'; ?>
 

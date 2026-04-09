@@ -32,53 +32,8 @@ $recent_result = $conn->query($recent_sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
   <body>
-    <div class="topbar">
-      <div class="topbar-users">
-        <a href="../farmer/dashboard.php" class="topbar-user">
-          <i class="fa fa-leaf"></i>
-          <span>Farmer</span>
-        </a>
-        <a href="../field_supervisor/dashboard.php" class="topbar-user active">
-          <i class="fa fa-truck"></i>
-          <span>Field Supervisor</span>
-        </a>
-        <a href="../quality_officer/dashboard.html" class="topbar-user">
-          <i class="fa fa-check-square-o"></i>
-          <span>Quality Officer</span>
-        </a>
-        <a href="../inventory_manager/dashboard.html" class="topbar-user">
-          <i class="fa fa-cubes"></i>
-          <span>Inventory</span>
-        </a>
-        <a href="../sales_manager/dashboard.html" class="topbar-user">
-          <i class="fa fa-shopping-cart"></i>
-          <span>Sales</span>
-        </a>
-        <a href="../transport_manager/dashboard.html" class="topbar-user">
-          <i class="fa fa-car"></i>
-          <span>Transport</span>
-        </a>
-        <a href="../driver/dashboard.html" class="topbar-user">
-          <i class="fa fa-road"></i>
-          <span>Driver</span>
-        </a>
-        <a href="../super_shop/dashboard.html" class="topbar-user">
-          <i class="fa fa-shopping-bag"></i>
-          <span>Super Shop</span>
-        </a>
-        <a href="../local_market/dashboard.html" class="topbar-user">
-          <i class="fa fa-cart-arrow-down"></i>
-          <span>Local Market</span>
-        </a>
-      </div>
-    </div>
-    <header>
-      <div class="header-left">
-        <img src="../logo.png" alt="Logo" class="logo" />
-        <span class="title">Field Supervisor Dashboard</span>
-      </div>
-      <a href="../index.php" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
-    </header>
+    <?php include '../components/topbar.html'; ?>
+    <?php $page_title = 'Field Supervisor Dashboard'; include '../components/header.html'; ?>
 
     <main>
       <div class="stats-grid">

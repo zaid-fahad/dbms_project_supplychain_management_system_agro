@@ -1,3 +1,36 @@
+<?php
+include "../db.php";
+
+$total_stock = 0;
+$product_types = 0;
+$low_stock_items = 0;
+$batches_processed = 0;
+
+$stock_result = $conn->query("SELECT SUM(current_stock) AS total FROM Inventory");
+if ($stock_result && $stock_result->num_rows > 0) {
+    $row = $stock_result->fetch_assoc();
+    $total_stock = $row['total'] ? number_format($row['total'], 0) : 0;
+}
+
+$product_result = $conn->query("SELECT COUNT(*) AS total FROM Products");
+if ($product_result && $product_result->num_rows > 0) {
+    $product_types = $product_result->fetch_assoc()['total'];
+}
+
+$low_result = $conn->query("SELECT COUNT(*) AS total FROM Inventory WHERE current_stock < 500");
+if ($low_result && $low_result->num_rows > 0) {
+    $low_stock_items = $low_result->fetch_assoc()['total'];
+}
+
+$batch_result = $conn->query("SELECT COUNT(*) AS total FROM Batches");
+if ($batch_result && $batch_result->num_rows > 0) {
+    $batches_processed = $batch_result->fetch_assoc()['total'];
+}
+
+$recent_sql = "SELECT p.product_name, i.current_stock, DATE_FORMAT(i.last_updated, '%Y-%m-%d') AS last_updated FROM Inventory i JOIN Products p ON i.product_id=p.product_id ORDER BY i.last_updated DESC LIMIT 5";
+$recent_result = $conn->query($recent_sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,86 +44,31 @@
     />
   </head>
   <body>
-    <div class="topbar">
-      <div class="topbar-users">
-        <a href="../farmer/dashboard.html" class="topbar-user">
-          <i class="fa fa-leaf"></i>
-          <span>Farmer</span>
-        </a>
-        <a href="../field_supervisor/dashboard.html" class="topbar-user">
-          <i class="fa fa-truck"></i>
-          <span>Field Supervisor</span>
-        </a>
-        <a href="../quality_officer/dashboard.html" class="topbar-user">
-          <i class="fa fa-check-square-o"></i>
-          <span>Quality Officer</span>
-        </a>
-        <a
-          href="../inventory_manager/dashboard.html"
-          class="topbar-user active"
-        >
-          <i class="fa fa-cubes"></i>
-          <span>Inventory</span>
-        </a>
-        <a href="../sales_manager/dashboard.html" class="topbar-user">
-          <i class="fa fa-shopping-cart"></i>
-          <span>Sales</span>
-        </a>
-        <a href="../transport_manager/dashboard.html" class="topbar-user">
-          <i class="fa fa-car"></i>
-          <span>Transport</span>
-        </a>
-        <a href="../driver/dashboard.html" class="topbar-user">
-          <i class="fa fa-road"></i>
-          <span>Driver</span>
-        </a>
-        <a href="../super_shop/dashboard.html" class="topbar-user">
-          <i class="fa fa-shopping-bag"></i>
-          <span>Super Shop</span>
-        </a>
-        <a href="../local_market/dashboard.html" class="topbar-user">
-          <i class="fa fa-cart-arrow-down"></i>
-          <span>Local Market</span>
-        </a>
-      </div>
-    </div>
+    <?php include '../components/topbar.html'; ?>
+    <?php $page_title = 'Inventory Manager Dashboard'; include '../components/header.html'; ?>
 
-    <header>
-      <div class="header-left">
-        <img src="../logo.png" alt="Logo" class="logo" />
-        <span class="title">Inventory Manager Dashboard</span>
-      </div>
-      <a href="../index.html" class="back-btn"
-        ><i class="fa fa-arrow-left"></i> Back</a
-      >
-    </header>
-
-    <!-- <nav>
-        <a href="stock_update.html"><i class="fa fa-plus-square"></i> Update Stock</a>
-        <a href="inventory_reports.html"><i class="fa fa-bar-chart"></i> Reports</a>
-        <a href="low_stock_alerts.html"><i class="fa fa-exclamation-triangle"></i> Low Stock</a>
-    </nav> -->
+    <?php include 'components/nav.html'; ?>
 
     <main>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-cubes"></i>
-          <div class="value">5,200</div>
+          <div class="value"><?php echo $total_stock; ?></div>
           <div class="label">Total Stock (kg)</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-cube"></i>
-          <div class="value">8</div>
+          <div class="value"><?php echo $product_types; ?></div>
           <div class="label">Product Types</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-exclamation-triangle"></i>
-          <div class="value">3</div>
+          <div class="value"><?php echo $low_stock_items; ?></div>
           <div class="label">Low Stock Items</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-check-circle"></i>
-          <div class="value">150</div>
+          <div class="value"><?php echo $batches_processed; ?></div>
           <div class="label">Batches Processed</div>
         </div>
       </div>
@@ -100,15 +78,15 @@
           <span class="card-title">Quick Actions</span>
         </div>
         <div class="quick-actions">
-          <a href="stock_update.html" class="action-btn">
+          <a href="stock_update.php" class="action-btn">
             <i class="fa fa-plus-square"></i>
             <span>Update Stock</span>
           </a>
-          <a href="inventory_reports.html" class="action-btn">
+          <a href="inventory_reports.php" class="action-btn">
             <i class="fa fa-bar-chart"></i>
             <span>Reports</span>
           </a>
-          <a href="low_stock_alerts.html" class="action-btn">
+          <a href="low_stock_alerts.php" class="action-btn">
             <i class="fa fa-exclamation-triangle"></i>
             <span>Low Stock</span>
           </a>
@@ -117,60 +95,39 @@
 
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Current Inventory</span>
+          <span class="card-title"><i class="fa fa-arrow-right"></i> Recent Stock Updates</span>
         </div>
         <table>
           <tr>
-            <th>Product</th>
-            <th>Warehouse</th>
-            <th>Stock (kg)</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th><i class="fa fa-leaf"></i> Product</th>
+            <th><i class="fa fa-cube"></i> Current Stock (kg)</th>
+            <th><i class="fa fa-clock-o"></i> Last Updated</th>
+            <th><i class="fa fa-info-circle"></i> Status</th>
           </tr>
+          <?php if ($recent_result && $recent_result->num_rows > 0) {
+            while ($row = $recent_result->fetch_assoc()) {
+              $status = $row['current_stock'] < 500 ? 'Low' : 'Good';
+              $status_class = $status == 'Low' ? 'warning' : 'success';
+          ?>
           <tr>
-            <td>Rice</td>
-            <td>Dhaka</td>
-            <td>2,000</td>
-            <td><span class="status completed">In Stock</span></td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewStock('Rice', 'Dhaka', '2,000', '2,500', 'In Stock')"
-              >
-                View
-              </button>
-            </td>
+            <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+            <td><?php echo number_format($row['current_stock'], 2); ?></td>
+            <td><?php echo $row['last_updated']; ?></td>
+            <td><span class="status <?php echo $status_class; ?>"><?php echo $status; ?></span></td>
           </tr>
-          <tr>
-            <td>Wheat</td>
-            <td>Barisal</td>
-            <td>1,500</td>
-            <td><span class="status completed">In Stock</span></td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewStock('Wheat', 'Barisal', '1,500', '2,000', 'In Stock')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Potatoes</td>
-            <td>Dhaka</td>
-            <td>200</td>
-            <td><span class="status pending">Low Stock</span></td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewStock('Potatoes', 'Dhaka', '200', '500', 'Low Stock')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
+          <?php }
+          } else {
+            echo '<tr><td colspan="4" style="text-align:center; padding:20px;">No stock records found.</td></tr>';
+          } ?>
         </table>
       </div>
+    </main>
+  </body>
+</html>
+          </a>
+        </div>
+      </div>
+
     </main>
 
     <div class="modal" id="detailsModal">
@@ -222,3 +179,4 @@
     </script>
   </body>
 </html>
+

@@ -25,14 +25,8 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
   <body>
-    <?php include 'components/topbar.html'; ?>
-    <header>
-      <div class="header-left">
-        <img src="../logo.png" alt="Logo" class="logo" />
-        <span class="title">Farmer List</span>
-      </div>
-      <a href="dashboard.php" class="back-btn"><i class="fa fa-arrow-left"></i> Back</a>
-    </header>
+    <?php include '../components/topbar.html'; ?>
+    <?php $page_title = 'Farmer List'; include '../components/header.html'; ?>
 
     <?php include 'components/nav.html'; ?>
 
@@ -78,3 +72,4 @@ $result = $conn->query($sql);
     </main>
   </body>
 </html>
+

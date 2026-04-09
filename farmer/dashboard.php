@@ -34,17 +34,8 @@
     $total_earnings = 0;
     ?>
 
-    <?php include 'components/topbar.html'; ?>
-
-    <header>
-      <div class="header-left">
-        <img src="../logo.png" alt="Logo" class="logo" />
-        <span class="title">Farmer Dashboard</span>
-      </div>
-      <a href="../index.php" class="back-btn"
-        ><i class="fa fa-arrow-left"></i> Back</a
-      >
-    </header>
+    <?php include '../components/topbar.html'; ?>
+    <?php $page_title = 'Farmer Dashboard'; include '../components/header.html'; ?>
 
     <?php include 'components/nav.html'; ?>
 
@@ -191,3 +182,4 @@
     </script>
   </body>
 </html>
+
