@@ -50,7 +50,7 @@
                 <h3>Transport Manager</h3>
                 <p>Assign deliveries</p>
             </a>
-            <a href="driver/dashboard.html" class="user-card">
+            <a href="driver/dashboard.php" class="user-card">
                 <i class="fa fa-road"></i>
                 <h3>Driver</h3>
                 <p>Execute deliveries</p>
