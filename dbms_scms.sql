@@ -188,6 +188,50 @@ INSERT INTO `Products` (`product_id`, `product_name`, `category`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `SuperShop_Orders`
+--
+
+CREATE TABLE `SuperShop_Orders` (
+  `super_shop_order_id` int(11) NOT NULL,
+  `customer_name` varchar(100) NOT NULL DEFAULT 'Super Shop',
+  `delivery_address` text NOT NULL,
+  `delivery_date` date DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `status` enum('Pending','Verified','Processing','Shipped','Delivered') DEFAULT 'Pending',
+  `total_amount` decimal(12,2) DEFAULT 0.00,
+  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `SuperShop_Order_Items`
+--
+
+CREATE TABLE `SuperShop_Order_Items` (
+  `order_item_id` int(11) NOT NULL,
+  `super_shop_order_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit` varchar(20) NOT NULL DEFAULT 'kg',
+  `unit_price` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `line_total` decimal(12,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `SuperShop_Order_Refs`
+--
+
+CREATE TABLE `SuperShop_Order_Refs` (
+  `super_shop_order_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Quality_Checks`
 --
 
@@ -319,6 +363,27 @@ ALTER TABLE `Products`
   ADD PRIMARY KEY (`product_id`);
 
 --
+-- Indexes for table `SuperShop_Orders`
+--
+ALTER TABLE `SuperShop_Orders`
+  ADD PRIMARY KEY (`super_shop_order_id`);
+
+--
+-- Indexes for table `SuperShop_Order_Items`
+--
+ALTER TABLE `SuperShop_Order_Items`
+  ADD PRIMARY KEY (`order_item_id`),
+  ADD KEY `super_shop_order_id` (`super_shop_order_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `SuperShop_Order_Refs`
+--
+ALTER TABLE `SuperShop_Order_Refs`
+  ADD PRIMARY KEY (`super_shop_order_id`),
+  ADD UNIQUE KEY `order_id` (`order_id`);
+
+--
 -- Indexes for table `Quality_Checks`
 --
 ALTER TABLE `Quality_Checks`
@@ -398,6 +463,18 @@ ALTER TABLE `Products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `SuperShop_Orders`
+--
+ALTER TABLE `SuperShop_Orders`
+  MODIFY `super_shop_order_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `SuperShop_Order_Items`
+--
+ALTER TABLE `SuperShop_Order_Items`
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `Quality_Checks`
 --
 ALTER TABLE `Quality_Checks`
@@ -460,6 +537,20 @@ ALTER TABLE `IoT_Logs`
 ALTER TABLE `Orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`),
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`sales_manager_id`) REFERENCES `Users` (`user_id`);
+
+--
+-- Constraints for table `SuperShop_Order_Items`
+--
+ALTER TABLE `SuperShop_Order_Items`
+  ADD CONSTRAINT `supershop_order_items_ibfk_1` FOREIGN KEY (`super_shop_order_id`) REFERENCES `SuperShop_Orders` (`super_shop_order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supershop_order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `Products` (`product_id`);
+
+--
+-- Constraints for table `SuperShop_Order_Refs`
+--
+ALTER TABLE `SuperShop_Order_Refs`
+  ADD CONSTRAINT `supershop_order_refs_ibfk_1` FOREIGN KEY (`super_shop_order_id`) REFERENCES `SuperShop_Orders` (`super_shop_order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supershop_order_refs_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `Orders` (`order_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `Quality_Checks`

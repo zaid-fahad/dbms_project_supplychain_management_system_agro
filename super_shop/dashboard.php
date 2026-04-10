@@ -1,3 +1,52 @@
+<?php
+include "../db.php";
+
+function supershop_status_class($status) {
+  if ($status === 'Delivered') {
+    return 'completed';
+  }
+
+  if ($status === 'Processing' || $status === 'Shipped') {
+    return 'in-transit';
+  }
+
+  return 'pending';
+}
+
+$total_orders = 0;
+$delivered_orders = 0;
+$in_transit_orders = 0;
+$total_spent = 0.00;
+$recent_orders = [];
+
+$result = $conn->query("SELECT COUNT(*) AS total FROM SuperShop_Orders");
+if ($result) {
+  $total_orders = (int) ($result->fetch_assoc()['total'] ?? 0);
+}
+
+$result = $conn->query("SELECT COUNT(*) AS total FROM SuperShop_Orders sso LEFT JOIN SuperShop_Order_Refs sor ON sso.super_shop_order_id = sor.super_shop_order_id LEFT JOIN Orders o ON sor.order_id = o.order_id WHERE COALESCE(o.status, sso.status) = 'Delivered'");
+if ($result) {
+  $delivered_orders = (int) ($result->fetch_assoc()['total'] ?? 0);
+}
+
+$result = $conn->query("SELECT COUNT(*) AS total FROM SuperShop_Orders sso LEFT JOIN SuperShop_Order_Refs sor ON sso.super_shop_order_id = sor.super_shop_order_id LEFT JOIN Orders o ON sor.order_id = o.order_id WHERE COALESCE(o.status, sso.status) IN ('Processing', 'Shipped')");
+if ($result) {
+  $in_transit_orders = (int) ($result->fetch_assoc()['total'] ?? 0);
+}
+
+$result = $conn->query("SELECT COALESCE(SUM(COALESCE(o.total_amount, sso.total_amount)), 0) AS total FROM SuperShop_Orders sso LEFT JOIN SuperShop_Order_Refs sor ON sso.super_shop_order_id = sor.super_shop_order_id LEFT JOIN Orders o ON sor.order_id = o.order_id");
+if ($result) {
+  $total_spent = (float) ($result->fetch_assoc()['total'] ?? 0);
+}
+
+$recent_sql = "SELECT COALESCE(ord.order_id, o.super_shop_order_id) AS order_id, o.customer_name, o.delivery_address, DATE_FORMAT(o.delivery_date, '%Y-%m-%d') AS delivery_date, DATE_FORMAT(o.order_date, '%Y-%m-%d') AS order_date, COALESCE(ord.status, o.status) AS status, COALESCE(ord.total_amount, o.total_amount) AS total_amount, GROUP_CONCAT(CONCAT(p.product_name, ' x ', oi.quantity, ' ', oi.unit) ORDER BY oi.order_item_id SEPARATOR ', ') AS items FROM SuperShop_Orders o LEFT JOIN SuperShop_Order_Items oi ON o.super_shop_order_id = oi.super_shop_order_id LEFT JOIN Products p ON oi.product_id = p.product_id LEFT JOIN SuperShop_Order_Refs ref ON o.super_shop_order_id = ref.super_shop_order_id LEFT JOIN Orders ord ON ref.order_id = ord.order_id GROUP BY o.super_shop_order_id, ord.order_id, o.customer_name, o.delivery_address, o.delivery_date, o.order_date, ord.status, o.status, ord.total_amount, o.total_amount ORDER BY o.order_date DESC LIMIT 5";
+$recent_result = $conn->query($recent_sql);
+if ($recent_result) {
+  while ($row = $recent_result->fetch_assoc()) {
+    $recent_orders[] = $row;
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,33 +63,27 @@
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Super Shop Dashboard'; include '../components/header.html'; ?>
 
-    <!-- <nav>
-        <a href="place_order.html"><i class="fa fa-cart-plus"></i> Place Order</a>
-        <a href="order_status.html"><i class="fa fa-list-alt"></i> Order Status</a>
-        <a href="order_history.html"><i class="fa fa-history"></i> Order History</a>
-    </nav> -->
-
     <main>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-shopping-bag"></i>
-          <div class="value">25</div>
+          <div class="value"><?php echo $total_orders; ?></div>
           <div class="label">Total Orders</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-check-circle"></i>
-          <div class="value">20</div>
+          <div class="value"><?php echo $delivered_orders; ?></div>
           <div class="label">Delivered</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-clock-o"></i>
-          <div class="value">5</div>
+          <div class="value"><?php echo $in_transit_orders; ?></div>
           <div class="label">In Transit</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-money"></i>
-          <div class="value">450,000</div>
-          <div class="label">Total Spent</div>
+          <div class="value"><?php echo number_format($total_spent, 2); ?></div>
+          <div class="label">Total Spent (BDT)</div>
         </div>
       </div>
 
@@ -49,15 +92,15 @@
           <span class="card-title">Quick Actions</span>
         </div>
         <div class="quick-actions">
-          <a href="place_order.html" class="action-btn">
+          <a href="place_order.php" class="action-btn">
             <i class="fa fa-cart-plus"></i>
             <span>Place Order</span>
           </a>
-          <a href="order_status.html" class="action-btn">
+          <a href="order_status.php" class="action-btn">
             <i class="fa fa-list-alt"></i>
             <span>Order Status</span>
           </a>
-          <a href="order_history.html" class="action-btn">
+          <a href="order_history.php" class="action-btn">
             <i class="fa fa-history"></i>
             <span>Order History</span>
           </a>
@@ -71,42 +114,35 @@
         <table>
           <tr>
             <th>Order ID</th>
-            <th>Product</th>
-            <th>Quantity</th>
+            <th>Customer</th>
+            <th>Items</th>
             <th>Amount</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
-          <tr>
-            <td>ORD-001</td>
-            <td>Rice</td>
-            <td>200 kg</td>
-            <td>10,000 BDT</td>
-            <td><span class="status in-transit">In Transit</span></td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewOrder('ORD-001', 'Rice', '200 kg', '10,000 BDT', 'In Transit')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>ORD-002</td>
-            <td>Wheat</td>
-            <td>150 kg</td>
-            <td>7,500 BDT</td>
-            <td><span class="status completed">Delivered</span></td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewOrder('ORD-002', 'Wheat', '150 kg', '7,500 BDT', 'Delivered')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
+          <?php if (!empty($recent_orders)): ?>
+            <?php foreach ($recent_orders as $order): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($order['order_id']); ?></td>
+                <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+                <td><?php echo htmlspecialchars($order['items'] ?: 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars(number_format((float) $order['total_amount'], 2) . ' BDT'); ?></td>
+                <td><span class="status <?php echo supershop_status_class($order['status']); ?>"><?php echo htmlspecialchars($order['status']); ?></span></td>
+                <td>
+                  <button
+                    class="btn btn-info"
+                    onclick="viewOrder(<?php echo json_encode((string) $order['order_id']); ?>, <?php echo json_encode($order['customer_name']); ?>, <?php echo json_encode($order['items'] ?: 'N/A'); ?>, <?php echo json_encode(number_format((float) $order['total_amount'], 2) . ' BDT'); ?>, <?php echo json_encode($order['order_date']); ?>, <?php echo json_encode($order['delivery_date'] ?: 'N/A'); ?>, <?php echo json_encode($order['status']); ?>, <?php echo json_encode($order['delivery_address']); ?>)"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="6">No orders available.</td>
+            </tr>
+          <?php endif; ?>
         </table>
       </div>
     </main>
@@ -122,36 +158,48 @@
     </div>
 
     <script>
-      function viewOrder(orderId, product, quantity, amount, status) {
+      function viewOrder(orderId, customer, items, amount, orderDate, deliveryDate, status, address) {
         document.getElementById("modalBody").innerHTML = `
                 <div class="detail-row">
                     <span class="detail-label">Order ID:</span>
                     <span class="detail-value">${orderId}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Product:</span>
-                    <span class="detail-value">${product}</span>
+                    <span class="detail-label">Customer:</span>
+                    <span class="detail-value">${customer}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Quantity:</span>
-                    <span class="detail-value">${quantity}</span>
+                    <span class="detail-label">Items:</span>
+                    <span class="detail-value">${items}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Amount:</span>
                     <span class="detail-value">${amount}</span>
                 </div>
                 <div class="detail-row">
+                    <span class="detail-label">Order Date:</span>
+                    <span class="detail-value">${orderDate}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Delivery Date:</span>
+                    <span class="detail-value">${deliveryDate}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Delivery Address:</span>
+                    <span class="detail-value">${address || 'N/A'}</span>
+                </div>
+                <div class="detail-row">
                     <span class="detail-label">Status:</span>
                     <span class="detail-value"><span class="status ${
                       status === "Delivered"
                         ? "completed"
-                        : status === "In Transit"
+                        : status === "Processing" || status === "Shipped"
                         ? "in-transit"
                         : "pending"
                     }">${status}</span></span>
                 </div>
                 <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <a href="place_order.html" class="btn btn-primary">Reorder</a>
+                    <a href="place_order.php" class="btn btn-primary">Reorder</a>
                     <button class="btn btn-danger" onclick="closeModal()">Close</button>
                 </div>
             `;
