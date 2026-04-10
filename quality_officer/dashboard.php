@@ -1,3 +1,26 @@
+<?php
+include "../db.php";
+
+// Get stats from database
+$totalResult = $conn->query("SELECT COUNT(*) AS total FROM Quality_Checks");
+$total = $totalResult ? intval($totalResult->fetch_assoc()['total']) : 0;
+
+$approvedResult = $conn->query("SELECT COUNT(*) AS approved FROM Quality_Checks WHERE quality_tag = 'approved'");
+$approved = $approvedResult ? intval($approvedResult->fetch_assoc()['approved']) : 0;
+
+$rejectedResult = $conn->query("SELECT COUNT(*) AS rejected FROM Quality_Checks WHERE quality_tag = 'rejected'");
+$rejected = $rejectedResult ? intval($rejectedResult->fetch_assoc()['rejected']) : 0;
+
+$pendingResult = $conn->query("SELECT COUNT(*) AS pending FROM Quality_Checks WHERE quality_tag = 'pending'");
+$pending = $pendingResult ? intval($pendingResult->fetch_assoc()['pending']) : 0;
+
+$uncheckedResult = $conn->query("SELECT COUNT(*) AS unchecked FROM Batches b LEFT JOIN Quality_Checks q ON b.batch_id = q.batch_id WHERE q.check_id IS NULL");
+$unchecked = $uncheckedResult ? intval($uncheckedResult->fetch_assoc()['unchecked']) : 0;
+
+// Get pending batches (batches without quality checks)
+$pendingBatchesSql = "SELECT b.batch_id, b.batch_number, p.product_name, f.name AS farmer_name, b.quantity, b.unit, DATE_FORMAT(b.purchase_date, '%Y-%m-%d') AS purchase_date FROM Batches b LEFT JOIN Quality_Checks q ON b.batch_id = q.batch_id JOIN Farmers f ON b.farmer_id = f.farmer_id JOIN Products p ON b.product_id = p.product_id WHERE q.check_id IS NULL ORDER BY b.purchase_date DESC";
+$pendingBatchesResult = $conn->query($pendingBatchesSql);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,32 +39,37 @@
 
     <!-- 
     <nav>
-        <a href="quality_check.html"><i class="fa fa-check-square-o"></i> Quality Check</a>
-        <a href="batch_approval.html"><i class="fa fa-check-circle"></i> Batch Approval</a>
-        <a href="quality_reports.html"><i class="fa fa-bar-chart"></i> Quality Reports</a>
+        <a href="quality_check.php"><i class="fa fa-check-square-o"></i> Quality Check</a>
+        <a href="batch_approval.php"><i class="fa fa-check-circle"></i> Batch Approval</a>
+        <a href="quality_reports.php"><i class="fa fa-bar-chart"></i> Quality Reports</a>
     </nav> -->
 
     <main>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-check-square-o"></i>
-          <div class="value">120</div>
+          <div class="value"><?php echo $total; ?></div>
           <div class="label">Total Checks</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-check-circle"></i>
-          <div class="value">95</div>
-          <div class="label">Passed</div>
+          <div class="value"><?php echo $approved; ?></div>
+          <div class="label">Approved</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-times-circle"></i>
-          <div class="value">15</div>
-          <div class="label">Failed</div>
+          <div class="value"><?php echo $rejected; ?></div>
+          <div class="label">Rejected</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-clock-o"></i>
-          <div class="value">10</div>
+          <div class="value"><?php echo $pending; ?></div>
           <div class="label">Pending</div>
+        </div>
+        <div class="stat-card">
+          <i class="fa fa-exclamation-triangle"></i>
+          <div class="value"><?php echo $unchecked; ?></div>
+          <div class="label">Unchecked</div>
         </div>
       </div>
 
@@ -50,15 +78,15 @@
           <span class="card-title">Quick Actions</span>
         </div>
         <div class="quick-actions">
-          <a href="quality_check.html" class="action-btn">
+          <a href="quality_check.php" class="action-btn">
             <i class="fa fa-check-square-o"></i>
             <span>Quality Check</span>
           </a>
-          <a href="batch_approval.html" class="action-btn">
+          <a href="batch_approval.php" class="action-btn">
             <i class="fa fa-check-circle"></i>
             <span>Batch Approval</span>
           </a>
-          <a href="quality_reports.html" class="action-btn">
+          <a href="quality_reports.php" class="action-btn">
             <i class="fa fa-bar-chart"></i>
             <span>Quality Reports</span>
           </a>
@@ -78,26 +106,24 @@
             <th>Date</th>
             <th>Action</th>
           </tr>
-          <tr>
-            <td>B002</td>
-            <td>Wheat</td>
-            <td>300 kg</td>
-            <td>Field Supervisor</td>
-            <td>2026-03-14</td>
-            <td>
-              <a href="quality_check.html" class="btn btn-primary">Check</a>
-            </td>
-          </tr>
-          <tr>
-            <td>B004</td>
-            <td>Vegetables</td>
-            <td>150 kg</td>
-            <td>Field Supervisor</td>
-            <td>2026-03-15</td>
-            <td>
-              <a href="quality_check.html" class="btn btn-primary">Check</a>
-            </td>
-          </tr>
+          <?php if ($pendingBatchesResult && $pendingBatchesResult->num_rows > 0): ?>
+            <?php while ($row = $pendingBatchesResult->fetch_assoc()): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($row['batch_number']); ?></td>
+                <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                <td><?php echo htmlspecialchars($row['quantity'] . ' ' . $row['unit']); ?></td>
+                <td><?php echo htmlspecialchars($row['farmer_name'] ?? 'Unknown'); ?></td>
+                <td><?php echo htmlspecialchars($row['purchase_date']); ?></td>
+                <td>
+                  <a href="quality_check.php" class="btn btn-primary">Check</a>
+                </td>
+              </tr>
+            <?php endwhile; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="6">No pending batches available.</td>
+            </tr>
+          <?php endif; ?>
         </table>
       </div>
     </main>
