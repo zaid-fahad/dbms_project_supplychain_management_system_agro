@@ -20,32 +20,32 @@
     <main>
         <h2 class="page-title" style="text-align:center;">Select Your Role</h2>
         <div class="user-grid">
-            <a href="farmer/dashboard.html" class="user-card">
+            <a href="farmer/dashboard.php" class="user-card">
                 <i class="fa fa-leaf"></i>
                 <h3>Farmer</h3>
                 <p>Submit agricultural produce</p>
             </a>
-            <a href="field_supervisor/dashboard.html" class="user-card">
+            <a href="field_supervisor/dashboard.php" class="user-card">
                 <i class="fa fa-truck"></i>
                 <h3>Field Supervisor</h3>
                 <p>Record purchases from farmers</p>
             </a>
-            <a href="quality_officer/dashboard.html" class="user-card">
+            <a href="quality_officer/dashboard.php" class="user-card">
                 <i class="fa fa-check-square-o"></i>
                 <h3>Quality Officer</h3>
                 <p>Conduct quality control checks</p>
             </a>
-            <a href="inventory_manager/dashboard.html" class="user-card">
+            <a href="inventory_manager/dashboard.php" class="user-card">
                 <i class="fa fa-cubes"></i>
                 <h3>Inventory Manager</h3>
                 <p>Manage stock levels</p>
             </a>
-            <a href="sales_manager/dashboard.html" class="user-card">
+            <a href="sales_manager/dashboard.php" class="user-card">
                 <i class="fa fa-shopping-cart"></i>
                 <h3>Sales Manager</h3>
                 <p>Process sales orders</p>
             </a>
-            <a href="transport_manager/dashboard.html" class="user-card">
+            <a href="transport_manager/dashboard.php" class="user-card">
                 <i class="fa fa-car"></i>
                 <h3>Transport Manager</h3>
                 <p>Assign deliveries</p>
@@ -55,12 +55,12 @@
                 <h3>Driver</h3>
                 <p>Execute deliveries</p>
             </a>
-            <a href="super_shop/dashboard.html" class="user-card">
+            <a href="super_shop/dashboard.php" class="user-card">
                 <i class="fa fa-shopping-bag"></i>
                 <h3>Super Shop</h3>
                 <p>Place orders</p>
             </a>
-            <a href="local_market/dashboard.html" class="user-card">
+            <a href="local_market/dashboard.php" class="user-card">
                 <i class="fa fa-cart-arrow-down"></i>
                 <h3>Local Market</h3>
                 <p>View market orders</p>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Record Purchase - Field Supervisor</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="topbar-users">
+        <a href="../farmer/dashboard.html" class="topbar-user">
+          <i class="fa fa-leaf"></i>
+          <span>Farmer</span>
+        </a>
+        <a href="../field_supervisor/dashboard.html" class="topbar-user active">
+          <i class="fa fa-truck"></i>
+          <span>Field Supervisor</span>
+        </a>
+        <a href="../quality_officer/dashboard.html" class="topbar-user">
+          <i class="fa fa-check-square-o"></i>
+          <span>Quality Officer</span>
+        </a>
+        <a href="../inventory_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-cubes"></i>
+          <span>Inventory</span>
+        </a>
+        <a href="../sales_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-shopping-cart"></i>
+          <span>Sales</span>
+        </a>
+        <a href="../transport_manager/dashboard.html" class="topbar-user">
+          <i class="fa fa-car"></i>
+          <span>Transport</span>
+        </a>
+        <a href="../driver/dashboard.html" class="topbar-user">
+          <i class="fa fa-road"></i>
+          <span>Driver</span>
+        </a>
+        <a href="../super_shop/dashboard.php" class="topbar-user">
+          <i class="fa fa-shopping-bag"></i>
+          <span>Super Shop</span>
+        </a>
+        <a href="../local_market/dashboard.html" class="topbar-user">
+          <i class="fa fa-cart-arrow-down"></i>
+          <span>Local Market</span>
+        </a>
+      </div>
+    </div>
+
+    <header>
+      <div class="header-left">
+        <img src="../logo.png" alt="Logo" class="logo" />
+        <span class="title">Record Purchase</span>
+      </div>
+      <a href="dashboard.html" class="back-btn"
+        ><i class="fa fa-arrow-left"></i> Back</a
+      >
+    </header>
+
+    <!-- <nav>
+        <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="record_purchase.html" class="active"><i class="fa fa-cart-plus"></i> Record Purchase</a>
+        <a href="batch_management.html"><i class="fa fa-cube"></i> Batch Management</a>
+        <a href="farmer_list.html"><i class="fa fa-users"></i> Farmer List</a>
+    </nav> -->
+
+    <main>
+      <div class="card" style="max-width: 600px; margin: 0 auto">
+        <div class="card-header">
+          <span class="card-title">Record Purchase from Farmer</span>
+        </div>
+        <form
+          onsubmit="event.preventDefault(); alert('Purchase recorded successfully!');"
+        >
+          <div class="form-group">
+            <label for="farmer-name">Farmer Name</label>
+            <select id="farmer-name" name="farmer-name" required>
+              <option value="">Select Farmer</option>
+              <option value="rahim">Rahim (Shariatpur)</option>
+              <option value="karim">Karim (Madaripur)</option>
+              <option value="salam">Salam (Faridpur)</option>
+              <option value="rahman">Rahman (Gopalganj)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="produce-type">Produce Type</label>
+            <select id="produce-type" name="produce-type" required>
+              <option value="">Select Produce</option>
+              <option value="rice">Rice</option>
+              <option value="wheat">Wheat</option>
+              <option value="potatoes">Potatoes</option>
+              <option value="vegetables">Vegetables</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity (kg)</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              placeholder="Enter quantity"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="price">Price (BDT)</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Total price"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="purchase-date">Purchase Date</label>
+            <input
+              type="date"
+              id="purchase-date"
+              name="purchase-date"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-submit">
+            <i class="fa fa-check"></i> Record Purchase
+          </button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

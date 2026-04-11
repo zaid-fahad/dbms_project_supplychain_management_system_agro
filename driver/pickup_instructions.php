@@ -29,6 +29,8 @@ $data = $result->fetch_assoc();
 <?php include '../components/topbar.html'; ?>
 <?php $page_title = 'Pickup Instructions'; include '../components/header.html'; ?>
 
+<?php include 'components/nav.html'; ?>
+
 <main>
 
     <div class="card">

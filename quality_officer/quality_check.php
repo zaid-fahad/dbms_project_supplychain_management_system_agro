@@ -44,6 +44,8 @@ $pendingResult = $conn->query($pendingSql);
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Conduct Quality Check'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
       <div class="card" style="max-width: 600px; margin: 0 auto">
         <div class="card-header">

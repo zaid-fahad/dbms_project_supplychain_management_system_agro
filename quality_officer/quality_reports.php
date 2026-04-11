@@ -26,6 +26,8 @@ $reportResult = $conn->query($reportSql);
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Quality Reports'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
         <div class="stats-grid">
             <div class="stat-card">

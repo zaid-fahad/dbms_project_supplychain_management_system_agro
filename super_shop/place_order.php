@@ -101,6 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Place Order'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
       <div class="card" style="max-width: 600px; margin: 0 auto">
         <div class="card-header">

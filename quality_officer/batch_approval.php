@@ -37,6 +37,8 @@ $result = $conn->query($sql);
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Batch Approval'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
         <div class="card">
             <div class="card-header">

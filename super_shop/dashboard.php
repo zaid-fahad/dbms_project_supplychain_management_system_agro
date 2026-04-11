@@ -63,6 +63,8 @@ if ($recent_result) {
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Super Shop Dashboard'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
       <div class="stats-grid">
         <div class="stat-card">
@@ -131,7 +133,15 @@ if ($recent_result) {
                 <td>
                   <button
                     class="btn btn-info"
-                    onclick="viewOrder(<?php echo json_encode((string) $order['order_id']); ?>, <?php echo json_encode($order['customer_name']); ?>, <?php echo json_encode($order['items'] ?: 'N/A'); ?>, <?php echo json_encode(number_format((float) $order['total_amount'], 2) . ' BDT'); ?>, <?php echo json_encode($order['order_date']); ?>, <?php echo json_encode($order['delivery_date'] ?: 'N/A'); ?>, <?php echo json_encode($order['status']); ?>, <?php echo json_encode($order['delivery_address']); ?>)"
+                    data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>"
+                    data-customer="<?php echo htmlspecialchars($order['customer_name']); ?>"
+                    data-items="<?php echo htmlspecialchars($order['items'] ?: 'N/A'); ?>"
+                    data-amount="<?php echo htmlspecialchars(number_format((float) $order['total_amount'], 2) . ' BDT'); ?>"
+                    data-order-date="<?php echo htmlspecialchars($order['order_date']); ?>"
+                    data-delivery-date="<?php echo htmlspecialchars($order['delivery_date'] ?: 'N/A'); ?>"
+                    data-status="<?php echo htmlspecialchars($order['status']); ?>"
+                    data-address="<?php echo htmlspecialchars($order['delivery_address']); ?>"
+                    onclick="viewOrder(this)"
                   >
                     View
                   </button>
@@ -158,7 +168,16 @@ if ($recent_result) {
     </div>
 
     <script>
-      function viewOrder(orderId, customer, items, amount, orderDate, deliveryDate, status, address) {
+      function viewOrder(button) {
+        const orderId = button.getAttribute('data-order-id');
+        const customer = button.getAttribute('data-customer');
+        const items = button.getAttribute('data-items');
+        const amount = button.getAttribute('data-amount');
+        const orderDate = button.getAttribute('data-order-date');
+        const deliveryDate = button.getAttribute('data-delivery-date');
+        const status = button.getAttribute('data-status');
+        const address = button.getAttribute('data-address');
+
         document.getElementById("modalBody").innerHTML = `
                 <div class="detail-row">
                     <span class="detail-label">Order ID:</span>
@@ -209,6 +228,13 @@ if ($recent_result) {
       function closeModal() {
         document.getElementById("detailsModal").classList.remove("active");
       }
+
+      // Close modal when clicking outside
+      document.getElementById("detailsModal").addEventListener("click", function(event) {
+        if (event.target === this) {
+          closeModal();
+        }
+      });
     </script>
   </body>
 </html>

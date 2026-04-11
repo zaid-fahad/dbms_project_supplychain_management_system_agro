@@ -54,6 +54,8 @@ $result = $conn->query($sql);
 <?php include '../components/topbar.html'; ?>
 <?php $page_title = 'Driver Dashboard'; include '../components/header.html'; ?>
 
+<?php include 'components/nav.html'; ?>
+
 <main>
 
     <div class="stats-grid">

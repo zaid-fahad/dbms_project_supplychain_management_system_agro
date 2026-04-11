@@ -37,12 +37,7 @@ $pendingBatchesResult = $conn->query($pendingBatchesSql);
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Quality Officer Dashboard'; include '../components/header.html'; ?>
 
-    <!-- 
-    <nav>
-        <a href="quality_check.php"><i class="fa fa-check-square-o"></i> Quality Check</a>
-        <a href="batch_approval.php"><i class="fa fa-check-circle"></i> Batch Approval</a>
-        <a href="quality_reports.php"><i class="fa fa-bar-chart"></i> Quality Reports</a>
-    </nav> -->
+    <?php include 'components/nav.html'; ?>
 
     <main>
       <div class="stats-grid">

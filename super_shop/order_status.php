@@ -38,6 +38,8 @@ if ($result) {
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Order Status'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
       <div class="card">
         <div class="card-header">

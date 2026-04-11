@@ -14,11 +14,7 @@
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Sales Manager Dashboard'; include '../components/header.html'; ?>
 
-    <!-- <nav>
-        <a href="order_processing.html"><i class="fa fa-shopping-cart"></i> Process Orders</a>
-        <a href="sales_reports.html"><i class="fa fa-bar-chart"></i> Sales Reports</a>
-        <a href="customer_management.html"><i class="fa fa-users"></i> Customers</a>
-    </nav> -->
+    <?php include 'components/nav.html'; ?>
 
     <main>
       <div class="stats-grid">

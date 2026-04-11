@@ -35,6 +35,8 @@ $recent_result = $conn->query($recent_sql);
     <?php include '../components/topbar.html'; ?>
     <?php $page_title = 'Field Supervisor Dashboard'; include '../components/header.html'; ?>
 
+    <?php include 'components/nav.html'; ?>
+
     <main>
       <div class="stats-grid">
         <div class="stat-card">

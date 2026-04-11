@@ -37,6 +37,8 @@ $result = $conn->query("
 <?php include '../components/topbar.html'; ?>
 <?php $page_title = 'Update Delivery Status'; include '../components/header.html'; ?>
 
+<?php include 'components/nav.html'; ?>
+
 <main>
 
     <div class="card" style="max-width: 600px; margin: 0 auto;">
