@@ -45,17 +45,29 @@
           <span class="card-title">Quick Actions</span>
         </div>
         <div class="quick-actions">
-          <a href="order_processing.html" class="action-btn">
+          <a href="order_processing.php" class="action-btn">
             <i class="fa fa-shopping-cart"></i>
             <span>Process Orders</span>
           </a>
-          <a href="sales_reports.html" class="action-btn">
+          <a href="sales_reports.php" class="action-btn">
             <i class="fa fa-bar-chart"></i>
             <span>Sales Reports</span>
           </a>
-          <a href="customer_management.html" class="action-btn">
+          <a href="customer_management.php" class="action-btn">
             <i class="fa fa-users"></i>
             <span>Customers</span>
+          </a>
+          <a href="market_orders.php" class="action-btn">
+            <i class="fa fa-shopping-basket"></i>
+            <span>Market Orders</span>
+          </a>
+          <a href="demand_forecast.php" class="action-btn">
+            <i class="fa fa-line-chart"></i>
+            <span>Demand Forecast</span>
+          </a>
+          <a href="price_trends.php" class="action-btn">
+            <i class="fa fa-bar-chart"></i>
+            <span>Price Trends</span>
           </a>
         </div>
       </div>
