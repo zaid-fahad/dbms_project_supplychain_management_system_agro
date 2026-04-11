@@ -240,6 +240,9 @@ CREATE TABLE `Quality_Checks` (
   `batch_id` int(11) DEFAULT NULL,
   `officer_id` int(11) DEFAULT NULL,
   `quality_tag` varchar(50) DEFAULT NULL,
+  `moisture_content` decimal(5,2) DEFAULT NULL,
+  `purity` decimal(5,2) DEFAULT NULL,
+  `grade` varchar(5) DEFAULT NULL,
   `comments` text DEFAULT NULL,
   `check_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
