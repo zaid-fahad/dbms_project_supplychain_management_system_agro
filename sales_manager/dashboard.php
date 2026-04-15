@@ -16,26 +16,65 @@
 
     <?php include 'components/nav.html'; ?>
 
+    <?php
+    // Try database connection, fallback to dummy data if connection fails
+    $dbConnected = false;
+    $totalOrders = 85;
+    $completedOrders = 65;
+    $pendingOrders = 20;
+    $totalSales = 1200000;
+    $pendingOrdersData = [];
+
+    try {
+        $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
+        if (!$conn->connect_error) {
+            $dbConnected = true;
+
+            $totalOrders = intval($conn->query("SELECT COUNT(*) as count FROM Orders")->fetch_assoc()['count']);
+            $completedOrders = intval($conn->query("SELECT COUNT(*) as count FROM Orders WHERE status = 'Delivered'")->fetch_assoc()['count']);
+            $pendingOrders = intval($conn->query("SELECT COUNT(*) as count FROM Orders WHERE status = 'Pending'")->fetch_assoc()['count']);
+            $totalSales = floatval($conn->query("SELECT COALESCE(SUM(total_amount), 0) as total FROM Orders WHERE status = 'Delivered'")->fetch_assoc()['total']);
+
+            $pendingOrdersQuery = $conn->query("SELECT o.order_id, c.customer_name, o.total_amount, o.status, o.order_date FROM Orders o LEFT JOIN Customers c ON o.customer_id = c.customer_id WHERE o.status = 'Pending' ORDER BY o.order_date DESC LIMIT 5");
+
+            if ($pendingOrdersQuery) {
+                while ($row = $pendingOrdersQuery->fetch_assoc()) {
+                    $pendingOrdersData[] = $row;
+                }
+            }
+
+            $conn->close();
+        }
+    } catch (Exception $e) {
+        $dbConnected = false;
+        $pendingOrdersData = [
+            ['order_id' => 1, 'customer_name' => 'Super Shop A', 'total_amount' => 10000, 'order_date' => '2024-01-15', 'status' => 'Pending'],
+            ['order_id' => 2, 'customer_name' => 'Local Market B', 'total_amount' => 7500, 'order_date' => '2024-01-14', 'status' => 'Pending'],
+            ['order_id' => 3, 'customer_name' => 'Restaurant C', 'total_amount' => 5000, 'order_date' => '2024-01-13', 'status' => 'Pending']
+        ];
+    }
+    ?>
+
     <main>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-shopping-cart"></i>
-          <div class="value">85</div>
+          <div class="value"><?php echo $totalOrders; ?></div>
           <div class="label">Total Orders</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-check-circle"></i>
-          <div class="value">65</div>
+          <div class="value"><?php echo $completedOrders; ?></div>
           <div class="label">Completed</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-clock-o"></i>
-          <div class="value">20</div>
+          <div class="value"><?php echo $pendingOrders; ?></div>
           <div class="label">Pending</div>
         </div>
         <div class="stat-card">
           <i class="fa fa-money"></i>
-          <div class="value">1.2M</div>
+          <div class="value"><?php echo number_format($totalSales, 0); ?>K</div>
           <div class="label">Total Sales (BDT)</div>
         </div>
       </div>
@@ -61,6 +100,10 @@
             <i class="fa fa-shopping-basket"></i>
             <span>Market Orders</span>
           </a>
+          <a href="shop_orders.php" class="action-btn">
+            <i class="fa fa-store"></i>
+            <span>Shop Orders</span>
+          </a>
           <a href="demand_forecast.php" class="action-btn">
             <i class="fa fa-line-chart"></i>
             <span>Demand Forecast</span>
@@ -80,41 +123,31 @@
           <tr>
             <th>Order ID</th>
             <th>Customer</th>
-            <th>Product</th>
-            <th>Quantity</th>
             <th>Amount</th>
+            <th>Status</th>
+            <th>Order Date</th>
             <th>Action</th>
           </tr>
-          <tr>
-            <td>ORD-001</td>
-            <td>Super Shop A</td>
-            <td>Rice</td>
-            <td>200 kg</td>
-            <td>10,000 BDT</td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewOrder('ORD-001', 'Super Shop A', 'Rice', '200 kg', '10,000 BDT', 'Pending')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>ORD-002</td>
-            <td>Local Market</td>
-            <td>Wheat</td>
-            <td>150 kg</td>
-            <td>7,500 BDT</td>
-            <td>
-              <button
-                class="btn btn-info"
-                onclick="viewOrder('ORD-002', 'Local Market', 'Wheat', '150 kg', '7,500 BDT', 'Pending')"
-              >
-                View
-              </button>
-            </td>
-          </tr>
+          <?php
+          if (!empty($pendingOrdersData)) {
+              foreach($pendingOrdersData as $order) {
+                  echo "<tr>
+                          <td>ORD-{$order['order_id']}</td>
+                          <td>{$order['customer_name']}</td>
+                          <td>" . number_format($order['total_amount'], 0) . " BDT</td>
+                          <td><span class='status " . strtolower(str_replace(' ', '-', $order['status'])) . "'>{$order['status']}</span></td>
+                          <td>" . date('Y-m-d', strtotime($order['order_date'])) . "</td>
+                          <td>
+                            <button class='btn btn-info' onclick=\"viewOrder('ORD-{$order['order_id']}', '{$order['customer_name']}', '" . number_format($order['total_amount'], 0) . " BDT', '{$order['status']}')\">
+                              View
+                            </button>
+                          </td>
+                        </tr>";
+              }
+          } else {
+              echo "<tr><td colspan='6'>No pending orders</td></tr>";
+          }
+          ?>
         </table>
       </div>
     </main>
@@ -128,6 +161,42 @@
         <div id="modalBody"></div>
       </div>
     </div>
+
+    <script>
+      function viewOrder(orderId, customer, amount, status) {
+        document.getElementById("modalBody").innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Order ID:</span>
+                    <span class="detail-value">${orderId}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Customer:</span>
+                    <span class="detail-value">${customer}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value">${amount}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value"><span class="status ${
+                      status === "Pending" ? "pending" : "completed"
+                    }">${status}</span></span>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary">Process</button>
+                    <button class="btn btn-danger" onclick="closeModal()">Close</button>
+                </div>
+            `;
+        document.getElementById("detailsModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("detailsModal").classList.remove("active");
+      }
+    </script>
+  </body>
+</html>
 
     <script>
       function viewOrder(orderId, customer, product, quantity, amount, status) {

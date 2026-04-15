@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Market Orders - Sales Manager</title>
+    <title>Shop Orders - Sales Manager</title>
     <link rel="stylesheet" href="../style.css" />
     <link
       rel="stylesheet"
@@ -12,27 +12,27 @@
   </head>
   <body>
     <?php include '../components/topbar.html'; ?>
-    <?php $page_title = 'Market Orders'; include '../components/header.html'; ?>
+    <?php $page_title = 'Shop Orders'; include '../components/header.html'; ?>
 
     <?php include 'components/nav.html'; ?>
 
     <?php
     $dbConnected = false;
-    $marketOrders = [];
+    $shopOrders = [];
 
     try {
         $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
         if (!$conn->connect_error) {
             $dbConnected = true;
             $sql = "SELECT o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
-                    FROM Orders o
+                    FROM SuperShop_Orders o
                     JOIN Customers c ON o.customer_id = c.customer_id
-                    WHERE c.customer_type = 'Local Market'
+                    WHERE c.customer_type = 'Super Shop'
                     ORDER BY o.order_date DESC";
             $result = $conn->query($sql);
             if ($result) {
                 while ($row = $result->fetch_assoc()) {
-                    $marketOrders[] = $row;
+                    $shopOrders[] = $row;
                 }
             }
             $conn->close();
@@ -42,10 +42,10 @@
     }
 
     if (!$dbConnected) {
-        $marketOrders = [
-            ['order_id' => 101, 'customer_name' => 'Local Market A', 'total_amount' => 8400, 'status' => 'Pending', 'order_date' => '2024-04-12'],
-            ['order_id' => 102, 'customer_name' => 'City Market B', 'total_amount' => 11900, 'status' => 'Processing', 'order_date' => '2024-04-11'],
-            ['order_id' => 103, 'customer_name' => 'Community Market C', 'total_amount' => 5200, 'status' => 'Shipped', 'order_date' => '2024-04-10']
+        $shopOrders = [
+            ['order_id' => 201, 'customer_name' => 'Super Shop A', 'total_amount' => 15000, 'status' => 'Pending', 'order_date' => '2024-04-12'],
+            ['order_id' => 202, 'customer_name' => 'Mega Mart B', 'total_amount' => 22000, 'status' => 'Processing', 'order_date' => '2024-04-11'],
+            ['order_id' => 203, 'customer_name' => 'Retail Store C', 'total_amount' => 8500, 'status' => 'Shipped', 'order_date' => '2024-04-10']
         ];
     }
     ?>
@@ -53,8 +53,8 @@
     <main>
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Market Orders</span>
-          <button class="btn btn-primary" onclick="newMarketOrder()">
+          <span class="card-title">Shop Orders</span>
+          <button class="btn btn-primary" onclick="newShopOrder()">
             <i class="fa fa-plus"></i> New Order
           </button>
         </div>
@@ -67,11 +67,11 @@
             <th>Status</th>
           </tr>
           <?php
-          if (!empty($marketOrders)) {
-              foreach ($marketOrders as $row) {
+          if (!empty($shopOrders)) {
+              foreach ($shopOrders as $row) {
                   $statusClass = strtolower(str_replace(' ', '-', $row['status']));
                   echo "<tr>
-                          <td>ORD-{$row['order_id']}</td>
+                          <td>SHOP-{$row['order_id']}</td>
                           <td>{$row['customer_name']}</td>
                           <td>" . date('Y-m-d', strtotime($row['order_date'])) . "</td>
                           <td>" . number_format($row['total_amount'], 0) . " BDT</td>
@@ -79,7 +79,7 @@
                         </tr>";
               }
           } else {
-              echo "<tr><td colspan='5'>No market orders found</td></tr>";
+              echo "<tr><td colspan='5'>No shop orders found</td></tr>";
           }
           ?>
         </table>
@@ -87,8 +87,8 @@
     </main>
 
     <script>
-      function newMarketOrder() {
-        alert('Market orders are managed through the main order workflow.');
+      function newShopOrder() {
+        alert('Shop orders are managed through the main order workflow.');
       }
     </script>
   </body>

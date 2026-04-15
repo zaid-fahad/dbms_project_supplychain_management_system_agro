@@ -20,11 +20,11 @@
     <main>
         <h2 class="page-title" style="text-align:center;">Select Your Role</h2>
         <div class="user-grid">
-            <a href="farmer/dashboard.php" class="user-card">
+            <!-- <a href="farmer/dashboard.php" class="user-card">
                 <i class="fa fa-leaf"></i>
                 <h3>Farmer</h3>
                 <p>Submit agricultural produce</p>
-            </a>
+            </a> -->
             <a href="field_supervisor/dashboard.php" class="user-card">
                 <i class="fa fa-truck"></i>
                 <h3>Field Supervisor</h3>
@@ -60,11 +60,11 @@
                 <h3>Super Shop</h3>
                 <p>Place orders</p>
             </a>
-            <a href="local_market/dashboard.php" class="user-card">
+            <!-- <a href="local_market/dashboard.php" class="user-card">
                 <i class="fa fa-cart-arrow-down"></i>
                 <h3>Local Market</h3>
                 <p>View market orders</p>
-            </a>
+            </a> -->
         </div>
     </main>
 </body>
