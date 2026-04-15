@@ -87,9 +87,9 @@
       <div class="card">
         <div class="card-header">
           <span class="card-title">Market Orders</span>
-          <button class="btn btn-primary" onclick="newMarketOrder()">
+          <a href="add_market_order.php" class="btn btn-primary">
             <i class="fa fa-plus"></i> New Order
-          </button>
+          </a>
         </div>
         <table>
           <tr>
@@ -104,9 +104,9 @@
           if (!empty($marketOrders)) {
               foreach ($marketOrders as $row) {
                   $statusClass = strtolower(str_replace(' ', '-', $row['status']));
-                  $action = '';
+                  $processBtn = '';
                   if ($row['status'] === 'Pending') {
-                      $action = "<button type='button' class='btn btn-success' onclick='submitProcessOrder({$row['order_id']})'><i class='fa fa-check'></i> Process</button>";
+                      $processBtn = "<button type='button' class='btn btn-success' onclick='submitProcessOrder({$row['order_id']})'><i class='fa fa-check'></i> Process</button>";
                   }
                   echo "<tr>
                           <td>ORD-{$row['order_id']}</td>
@@ -114,7 +114,11 @@
                           <td>" . date('Y-m-d', strtotime($row['order_date'])) . "</td>
                           <td>" . number_format($row['total_amount'], 0) . " BDT</td>
                           <td><span class='status {$statusClass}'>{$row['status']}</span></td>
-                          <td>{$action}</td>
+                          <td style='display: flex; gap: 5px;'>
+                            <a href='view_market_order.php?order_id={$row['order_id']}' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
+                            <a href='update_market_order.php?order_id={$row['order_id']}' class='btn btn-warning'><i class='fa fa-edit'></i> Edit</a>
+                            {$processBtn}
+                          </td>
                         </tr>";
               }
           } else {
@@ -126,10 +130,6 @@
     </main>
 
     <script>
-      function newMarketOrder() {
-        alert('Market orders are managed through the main order workflow.');
-      }
-
       function submitProcessOrder(orderId) {
         if (confirm(`Process order ORD-${orderId}?`)) {
           document.getElementById('processOrderId').value = orderId;
