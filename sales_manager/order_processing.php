@@ -25,11 +25,14 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id'], $_POST['order_type']) && $_POST['action'] === 'process_order') {
         $orderId = intval($_POST['order_id']);
         $orderType = $_POST['order_type'];
-        $table = $orderType === 'shop' ? 'SuperShop_Orders' : 'Orders';
         try {
             $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
             if (!$conn->connect_error) {
-                $stmt = $conn->prepare("UPDATE $table SET status='Processing' WHERE order_id = ?");
+                if ($orderType === 'shop') {
+                    $stmt = $conn->prepare("UPDATE SuperShop_Orders SET status='Processing' WHERE order_id = ?");
+                } else {
+                    $stmt = $conn->prepare("UPDATE Orders SET status='Processing' WHERE order_id = ?");
+                }
                 $stmt->bind_param('i', $orderId);
                 $stmt->execute();
                 if ($stmt->affected_rows > 0) {

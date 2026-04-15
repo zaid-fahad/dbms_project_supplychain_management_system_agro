@@ -87,9 +87,6 @@
       <div class="card">
         <div class="card-header">
           <span class="card-title">Shop Orders</span>
-          <a href="add_shop_order.php" class="btn btn-primary">
-            <i class="fa fa-plus"></i> New Order
-          </a>
         </div>
         <table>
           <tr>
@@ -116,7 +113,6 @@
                           <td><span class='status {$statusClass}'>{$row['status']}</span></td>
                           <td style='display: flex; gap: 5px;'>
                             <a href='view_shop_order.php?order_id={$row['order_id']}' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
-                            <a href='update_shop_order.php?order_id={$row['order_id']}' class='btn btn-warning'><i class='fa fa-edit'></i> Edit</a>
                             {$processBtn}
                           </td>
                         </tr>";

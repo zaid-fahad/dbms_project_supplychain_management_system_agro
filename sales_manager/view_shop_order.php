@@ -85,9 +85,6 @@ if (isset($_GET['delete_order_id']) && $order_id) {
         </div>
 
         <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-          <a href="update_shop_order.php?order_id=<?php echo $order['order_id']; ?>" class="btn btn-warning">
-            <i class="fa fa-edit"></i> Edit
-          </a>
           <a href="view_shop_order.php?order_id=<?php echo $order['order_id']; ?>&delete_order_id=<?php echo $order['order_id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this order?');">
             <i class="fa fa-trash"></i> Delete
           </a>
