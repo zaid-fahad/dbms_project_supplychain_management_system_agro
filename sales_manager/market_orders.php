@@ -17,6 +17,31 @@
     <?php include 'components/nav.html'; ?>
 
     <?php
+    $message = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id']) && $_POST['action'] === 'process_order') {
+        $orderId = intval($_POST['order_id']);
+        try {
+            $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
+            if (!$conn->connect_error) {
+                $stmt = $conn->prepare("UPDATE Orders SET status='Processing' WHERE order_id = ?");
+                $stmt->bind_param('i', $orderId);
+                $stmt->execute();
+                if ($stmt->affected_rows > 0) {
+                    $message = "Order ORD-$orderId has been moved to Processing.";
+                } else {
+                    $message = "Order ORD-$orderId could not be updated.";
+                }
+                $stmt->close();
+                $conn->close();
+            } else {
+                $message = 'Database connection failed while processing order.';
+            }
+        } catch (Exception $e) {
+            $message = 'Unable to update order due to database error.';
+        }
+    }
+
     $dbConnected = false;
     $marketOrders = [];
 
@@ -51,6 +76,14 @@
     ?>
 
     <main>
+      <?php if (!empty($message)): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+      <?php endif; ?>
+
+      <form id="processForm" method="post" style="display:none;">
+        <input type="hidden" name="action" value="process_order" />
+        <input type="hidden" id="processOrderId" name="order_id" value="" />
+      </form>
       <div class="card">
         <div class="card-header">
           <span class="card-title">Market Orders</span>
@@ -65,21 +98,27 @@
             <th>Order Date</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
           <?php
           if (!empty($marketOrders)) {
               foreach ($marketOrders as $row) {
                   $statusClass = strtolower(str_replace(' ', '-', $row['status']));
+                  $action = '';
+                  if ($row['status'] === 'Pending') {
+                      $action = "<button type='button' class='btn btn-success' onclick='submitProcessOrder({$row['order_id']})'><i class='fa fa-check'></i> Process</button>";
+                  }
                   echo "<tr>
                           <td>ORD-{$row['order_id']}</td>
                           <td>{$row['customer_name']}</td>
                           <td>" . date('Y-m-d', strtotime($row['order_date'])) . "</td>
                           <td>" . number_format($row['total_amount'], 0) . " BDT</td>
                           <td><span class='status {$statusClass}'>{$row['status']}</span></td>
+                          <td>{$action}</td>
                         </tr>";
               }
           } else {
-              echo "<tr><td colspan='5'>No market orders found</td></tr>";
+              echo "<tr><td colspan='6'>No market orders found</td></tr>";
           }
           ?>
         </table>
@@ -89,6 +128,13 @@
     <script>
       function newMarketOrder() {
         alert('Market orders are managed through the main order workflow.');
+      }
+
+      function submitProcessOrder(orderId) {
+        if (confirm(`Process order ORD-${orderId}?`)) {
+          document.getElementById('processOrderId').value = orderId;
+          document.getElementById('processForm').submit();
+        }
       }
     </script>
   </body>

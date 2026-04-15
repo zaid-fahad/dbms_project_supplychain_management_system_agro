@@ -17,6 +17,33 @@
     <?php include 'components/nav.html'; ?>
 
     <?php
+    $message = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id'], $_POST['order_type']) && $_POST['action'] === 'process_order') {
+        $orderId = intval($_POST['order_id']);
+        $orderType = $_POST['order_type'];
+        $table = $orderType === 'shop' ? 'SuperShop_Orders' : 'Orders';
+        try {
+            $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
+            if (!$conn->connect_error) {
+                $stmt = $conn->prepare("UPDATE $table SET status='Processing' WHERE order_id = ?");
+                $stmt->bind_param('i', $orderId);
+                $stmt->execute();
+                if ($stmt->affected_rows > 0) {
+                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId has been moved to Processing.";
+                } else {
+                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId could not be updated.";
+                }
+                $stmt->close();
+                $conn->close();
+            } else {
+                $message = 'Database connection failed while processing order.';
+            }
+        } catch (Exception $e) {
+            $message = 'Unable to update order due to database error.';
+        }
+    }
+
     // Try database connection, fallback to dummy data if connection fails
     $dbConnected = false;
     $totalOrders = 85;
@@ -56,6 +83,15 @@
     ?>
 
     <main>
+      <?php if (!empty($message)): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+      <?php endif; ?>
+
+      <form id="processForm" method="post" style="display:none;">
+        <input type="hidden" name="action" value="process_order" />
+        <input type="hidden" id="processOrderId" name="order_id" value="" />
+        <input type="hidden" id="processOrderType" name="order_type" value="" />
+      </form>
       <div class="stats-grid">
         <div class="stat-card">
           <i class="fa fa-shopping-cart"></i>
@@ -164,6 +200,7 @@
 
     <script>
       function viewOrder(orderId, customer, amount, status) {
+        const isPending = status === 'Pending';
         document.getElementById("modalBody").innerHTML = `
                 <div class="detail-row">
                     <span class="detail-label">Order ID:</span>
@@ -184,11 +221,22 @@
                     }">${status}</span></span>
                 </div>
                 <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="btn btn-primary">Process</button>
+                    ${isPending ? '<button class="btn btn-primary" onclick="processOrder(\'' + orderId + '\', \'' + status + '\')">Process</button>' : ''}
                     <button class="btn btn-danger" onclick="closeModal()">Close</button>
                 </div>
             `;
         document.getElementById("detailsModal").classList.add("active");
+      }
+
+      function processOrder(orderId, status) {
+        if (status === 'Pending') {
+          if (confirm('Process order ' + orderId + '?')) {
+            const id = orderId.replace('ORD-', '');
+            document.getElementById('processOrderId').value = id;
+            document.getElementById('processOrderType').value = 'market';
+            document.getElementById('processForm').submit();
+          }
+        }
       }
 
       function closeModal() {
