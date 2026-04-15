@@ -19,31 +19,6 @@
     <?php
     $message = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id'], $_POST['order_type']) && $_POST['action'] === 'process_order') {
-        $orderId = intval($_POST['order_id']);
-        $orderType = $_POST['order_type'];
-        $table = $orderType === 'shop' ? 'SuperShop_Orders' : 'Orders';
-        try {
-            $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
-            if (!$conn->connect_error) {
-                $stmt = $conn->prepare("UPDATE $table SET status='Processing' WHERE order_id = ?");
-                $stmt->bind_param('i', $orderId);
-                $stmt->execute();
-                if ($stmt->affected_rows > 0) {
-                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId has been moved to Processing.";
-                } else {
-                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId could not be updated.";
-                }
-                $stmt->close();
-                $conn->close();
-            } else {
-                $message = 'Database connection failed while processing order.';
-            }
-        } catch (Exception $e) {
-            $message = 'Unable to update order due to database error.';
-        }
-    }
-
     // Try database connection, fallback to dummy data if connection fails
     $dbConnected = false;
     $totalOrders = 85;
@@ -135,10 +110,6 @@
           <a href="market_orders.php" class="action-btn">
             <i class="fa fa-shopping-basket"></i>
             <span>Market Orders</span>
-          </a>
-          <a href="shop_orders.php" class="action-btn">
-            <i class="fa fa-store"></i>
-            <span>Shop Orders</span>
           </a>
           <a href="demand_forecast.php" class="action-btn">
             <i class="fa fa-line-chart"></i>
@@ -233,7 +204,6 @@
           if (confirm('Process order ' + orderId + '?')) {
             const id = orderId.replace('ORD-', '');
             document.getElementById('processOrderId').value = id;
-            document.getElementById('processOrderType').value = 'market';
             document.getElementById('processForm').submit();
           }
         }
@@ -245,8 +215,6 @@
     </script>
   </body>
 </html>
-
-    <script>
       function viewOrder(orderId, customer, product, quantity, amount, status) {
         document.getElementById("modalBody").innerHTML = `
                 <div class="detail-row">

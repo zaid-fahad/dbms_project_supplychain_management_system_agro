@@ -22,23 +22,18 @@
     $processedOrders = [];
     $message = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id'], $_POST['order_type']) && $_POST['action'] === 'process_order') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['order_id']) && $_POST['action'] === 'process_order') {
         $orderId = intval($_POST['order_id']);
-        $orderType = $_POST['order_type'];
         try {
             $conn = new mysqli('localhost', 'root', '', 'dbms_scms');
             if (!$conn->connect_error) {
-                if ($orderType === 'shop') {
-                    $stmt = $conn->prepare("UPDATE SuperShop_Orders SET status='Processing' WHERE order_id = ?");
-                } else {
-                    $stmt = $conn->prepare("UPDATE Orders SET status='Processing' WHERE order_id = ?");
-                }
+                $stmt = $conn->prepare("UPDATE Orders SET status='Processing' WHERE order_id = ?");
                 $stmt->bind_param('i', $orderId);
                 $stmt->execute();
                 if ($stmt->affected_rows > 0) {
-                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId has been moved to Processing.";
+                    $message = "Order ORD-$orderId has been moved to Processing.";
                 } else {
-                    $message = "Order " . ($orderType === 'shop' ? 'SHOP' : 'ORD') . "-$orderId could not be updated.";
+                    $message = "Order ORD-$orderId could not be updated.";
                 }
                 $stmt->close();
                 $conn->close();
@@ -55,28 +50,18 @@
         if (!$conn->connect_error) {
             $dbConnected = true;
 
-            $sql = "(SELECT 'market' as order_type, o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
+            $sql = "SELECT o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
                     FROM Orders o
                     LEFT JOIN Customers c ON o.customer_id = c.customer_id
-                    WHERE o.status = 'Pending')
-                    UNION
-                    (SELECT 'shop' as order_type, o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
-                    FROM SuperShop_Orders o
-                    LEFT JOIN Customers c ON o.customer_id = c.customer_id
-                    WHERE o.status = 'Pending')
-                    ORDER BY order_date DESC";
+                    WHERE o.status = 'Pending'
+                    ORDER BY o.order_date DESC";
             $pendingResult = $conn->query($sql);
 
-            $sql = "(SELECT 'market' as order_type, o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
+            $sql = "SELECT o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
                     FROM Orders o
                     LEFT JOIN Customers c ON o.customer_id = c.customer_id
-                    WHERE o.status IN ('Verified', 'Processing', 'Shipped', 'Delivered'))
-                    UNION
-                    (SELECT 'shop' as order_type, o.order_id, c.customer_name, o.total_amount, o.status, o.order_date
-                    FROM SuperShop_Orders o
-                    LEFT JOIN Customers c ON o.customer_id = c.customer_id
-                    WHERE o.status IN ('Verified', 'Processing', 'Shipped', 'Delivered'))
-                    ORDER BY order_date DESC LIMIT 5";
+                    WHERE o.status IN ('Verified', 'Processing', 'Shipped', 'Delivered')
+                    ORDER BY o.order_date DESC LIMIT 5";
             $processedResult = $conn->query($sql);
 
             if ($pendingResult) {
@@ -99,14 +84,14 @@
 
     if (!$dbConnected) {
         $pendingOrders = [
-            ['order_type' => 'market', 'order_id' => 1, 'customer_name' => 'Local Market B', 'total_amount' => 7500, 'order_date' => '2024-01-14', 'status' => 'Pending'],
-            ['order_type' => 'shop', 'order_id' => 2, 'customer_name' => 'Super Shop A', 'total_amount' => 10000, 'order_date' => '2024-01-15', 'status' => 'Pending'],
-            ['order_type' => 'market', 'order_id' => 3, 'customer_name' => 'Restaurant C', 'total_amount' => 5000, 'order_date' => '2024-01-13', 'status' => 'Pending']
+            ['order_id' => 1, 'customer_name' => 'Local Market B', 'total_amount' => 7500, 'order_date' => '2024-01-14', 'status' => 'Pending'],
+            ['order_id' => 2, 'customer_name' => 'Super Shop A', 'total_amount' => 10000, 'order_date' => '2024-01-15', 'status' => 'Pending'],
+            ['order_id' => 3, 'customer_name' => 'Restaurant C', 'total_amount' => 5000, 'order_date' => '2024-01-13', 'status' => 'Pending']
         ];
 
         $processedOrders = [
-            ['order_type' => 'shop', 'order_id' => 4, 'customer_name' => 'Wholesale D', 'total_amount' => 25000, 'order_date' => '2024-01-12', 'status' => 'Processing'],
-            ['order_type' => 'market', 'order_id' => 5, 'customer_name' => 'Super Shop A', 'total_amount' => 15000, 'order_date' => '2024-01-11', 'status' => 'Delivered']
+            ['order_id' => 4, 'customer_name' => 'Wholesale D', 'total_amount' => 25000, 'order_date' => '2024-01-12', 'status' => 'Processing'],
+            ['order_id' => 5, 'customer_name' => 'Super Shop A', 'total_amount' => 15000, 'order_date' => '2024-01-11', 'status' => 'Delivered']
         ];
     }
     ?>
@@ -119,7 +104,6 @@
       <form id="processForm" method="post" style="display:none;">
         <input type="hidden" name="action" value="process_order" />
         <input type="hidden" id="processOrderId" name="order_id" value="" />
-        <input type="hidden" id="processOrderType" name="order_type" value="" />
       </form>
 
       <div class="card">
@@ -139,15 +123,14 @@
           if (!empty($pendingOrders)) {
               foreach($pendingOrders as $order) {
                   $statusClass = strtolower(str_replace(' ', '-', $order['status']));
-                  $prefix = $order['order_type'] === 'shop' ? 'SHOP' : 'ORD';
                   echo "<tr>
-                          <td>{$prefix}-{$order['order_id']}</td>
+                          <td>ORD-{$order['order_id']}</td>
                           <td>{$order['customer_name']}</td>
                           <td>" . number_format($order['total_amount'], 0) . " BDT</td>
                           <td><span class='status {$statusClass}'>{$order['status']}</span></td>
                           <td>" . date('Y-m-d', strtotime($order['order_date'])) . "</td>
                           <td>
-                            <button type='button' class='btn btn-success' onclick='submitProcessOrder({$order['order_id']}, \"{$order['order_type']}\")'>
+                            <button type='button' class='btn btn-success' onclick='submitProcessOrder({$order['order_id']})'>
                               <i class='fa fa-check'></i> Process
                             </button>
                           </td>
@@ -176,9 +159,8 @@
           if (!empty($processedOrders)) {
               foreach($processedOrders as $order) {
                   $statusClass = strtolower(str_replace(' ', '-', $order['status']));
-                  $prefix = $order['order_type'] === 'shop' ? 'SHOP' : 'ORD';
                   echo "<tr>
-                          <td>{$prefix}-{$order['order_id']}</td>
+                          <td>ORD-{$order['order_id']}</td>
                           <td>{$order['customer_name']}</td>
                           <td>" . number_format($order['total_amount'], 0) . " BDT</td>
                           <td><span class='status {$statusClass}'>{$order['status']}</span></td>
@@ -194,9 +176,9 @@
     </main>
 
     <script>
-      function submitProcessOrder(orderId, orderType) {
-        if (confirm(`Process order ${orderType === 'shop' ? 'SHOP' : 'ORD'}-${orderId}?`)) {
+      function submitProcessOrder(orderId) {
+        if (confirm(`Process order ORD-${orderId}?`)) {
           document.getElementById('processOrderId').value = orderId;
-          document.getElementById('processOrderType').value = orderType;
           document.getElementById('processForm').submit();
         }
+      }
